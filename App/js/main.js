@@ -1,5 +1,5 @@
 const typeingGame = () => {
-	window.addEventListener("load", gameStart);
+	const randomWords = require("random-words");
 
 	const difficultyLevel = {
 		easy: 7,
@@ -33,9 +33,6 @@ const typeingGame = () => {
 			case "HARD":
 				time = difficultyLevel.hard;
 				break;
-			default:
-				time = difficultyLevel.easy;
-				break;
 		}
 		return (timeDisplay.textContent = time);
 	}
@@ -58,6 +55,10 @@ const typeingGame = () => {
 	};
 	difficultySelect();
 
+	const randomText = () => {
+		randomTextSpan.textContent = randomWords();
+	};
+
 	function gameStart() {
 		setUserPreference();
 		randomText();
@@ -70,13 +71,7 @@ const typeingGame = () => {
 			}
 		});
 	}
-
-	const randomText = () => {
-		const arrRandomText = ["Hai", "Hallo", "Dirumah", "Stayathome", "Indonesia", "Martabak", "Mengapa", "Kemari"];
-		const ranIndex = Math.floor(Math.random() * arrRandomText.length);
-		const getRandomTextInArr = arrRandomText[ranIndex];
-		randomTextSpan.textContent = getRandomTextInArr;
-	};
+	gameStart();
 
 	const matchText = () => {
 		if (startMatch()) {
@@ -107,7 +102,6 @@ const typeingGame = () => {
 	function countDown() {
 		if (time > 0) time--;
 		else if (time === 0) {
-			isPlaying = false;
 			clearInterval(stopCountDown);
 			checkHighScore();
 		}
@@ -122,7 +116,10 @@ const typeingGame = () => {
 			skorDisplay.textContent = skor;
 			input.setAttribute("disabled", "");
 			btnTryAgain.style.visibility = "visible";
-			btnTryAgain.addEventListener("click", () => {});
+			btnTryAgain.addEventListener("click", () => location.reload());
+			document.addEventListener("keyup", (e) => {
+				if (e.keyCode === 13) location.reload();
+			});
 			clearInterval(stopGameOver);
 		}
 	};
@@ -130,7 +127,6 @@ const typeingGame = () => {
 	const checkHighScore = () => {
 		switch (recentDifficulty.textContent) {
 			case "EASY":
-				// return skor > Number(easyScore.textContent) ? (easyScore.textContent = skor) : false;
 				if (skor > Number(easyScore.textContent)) {
 					easyScore.textContent = skor;
 					syncWithLocalStorage(recentDifficulty.textContent, skor, medScore.textContent, hardScore.textContent);
@@ -173,4 +169,4 @@ const typeingGame = () => {
 	}
 };
 
-typeingGame();
+export default typeingGame;
