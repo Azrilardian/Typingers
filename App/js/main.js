@@ -6,14 +6,14 @@ const typeingGame = () => {
 			time: 50,
 		},
 		medium: {
-			time: 30,
+			time: 35,
 		},
 		hard: {
-			time: 15,
+			time: 20,
 		},
 	};
 
-	const skorDisplay = document.getElementById("score");
+	const skorDisplay = document.querySelector("#score span");
 	const timeDisplay = document.getElementById("time");
 	const input = document.querySelector("input");
 	const infoDisplay = document.getElementById("review-info");
@@ -23,7 +23,7 @@ const typeingGame = () => {
 	const medScore = document.getElementById("medium-score");
 	const hardScore = document.getElementById("hard-score");
 	let skor = 0;
-	let correct = true;
+	let isCorrect = true;
 	let time = 0;
 	let stopCountDown;
 	let stopGameOver;
@@ -51,7 +51,7 @@ const typeingGame = () => {
 			case "HARD":
 				time = difficultyLevel.hard.time;
 				words = randomWords({
-					exactly: 20,
+					exactly: 15,
 					join: " ",
 					maxLength: 10,
 				});
@@ -70,6 +70,7 @@ const typeingGame = () => {
 			// 	randomWordsDisplay.appendChild(spanWord);
 			// });
 
+			randomWordsDisplay.textContent = "";
 			words.split("").map((char) => {
 				const spanChar = document.createElement("span");
 				spanChar.innerText = char;
@@ -80,7 +81,6 @@ const typeingGame = () => {
 		input.value = null;
 		input.removeAttribute("disabled");
 		input.focus();
-		randomWordsDisplay.textContent = "";
 		timeDisplay.textContent = time;
 		sliceWordsInToSpan();
 	}
@@ -136,21 +136,20 @@ const typeingGame = () => {
 			const character = arrayValue[index];
 			if (character == null) {
 				char.classList.remove("incorrect");
-				correct = false;
+				isCorrect = false;
 			} else if (character === char.innerText) {
 				char.classList.add("correct");
 				char.classList.remove("incorrect");
 				infoDisplay.classList.add("correct");
-				correct = true;
+				isCorrect = true;
 			} else {
 				char.classList.add("incorrect");
 				char.classList.remove("correct");
 				infoDisplay.classList.remove("correct");
-				correct = false;
+				isCorrect = false;
 			}
 		});
-
-		if (correct) {
+		if (isCorrect) {
 			skorDisplay.textContent = ++skor;
 			setUserPreference();
 		}
@@ -212,7 +211,10 @@ const typeingGame = () => {
 
 	const darkModeFitures = () => {
 		const toggle = document.querySelector(".set-theme .darkmode-toggle");
-		toggle.addEventListener("click", () => toggle.classList.toggle("dark-mode-active"));
+		toggle.addEventListener("click", function () {
+			this.classList.toggle("dark-mode-active");
+			document.body.classList.toggle("darkmode");
+		});
 	};
 	darkModeFitures();
 

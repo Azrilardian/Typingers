@@ -1,4 +1,5 @@
 @import "./modules/var";
+@import "./modules/darkmode";
 
 * {
 	padding: 0;
@@ -9,6 +10,7 @@
 html body {
 	font-family: "Poppins", sans-serif;
 	user-select: none;
+	transition: 0.3s ease-in;
 }
 
 .container {
@@ -92,23 +94,27 @@ main .container {
 			background-color: #f9f9f9;
 			box-shadow: 3px 3px 10px #63636331;
 			border-radius: 10px;
+			transition: 0.3s ease-in;
 			p {
 				margin-top: 30px;
 				padding: 10px 20px;
 				font-size: 15px;
 				color: #4e4e4e;
+				transition: 0.3s ease-in;
 				span {
 					display: inline-block;
 					padding: 3px;
+					min-width: 15px;
+					text-align: center;
 					margin: 1px;
 					border-radius: 5px;
 				}
 				span.word.active {
-					background-color: rgba(211, 211, 211, 0.308);
+					background-color: #d3d3d34f;
 				}
 				span.correct {
 					color: $easy-difficulty;
-					background-color: lighten($color: $easy-difficulty, $amount: 40);
+					background-color: lighten($color: $easy-difficulty, $amount: 10);
 				}
 				span.incorrect {
 					color: $hard-difficulty;
@@ -128,6 +134,7 @@ main .container {
 					outline: none;
 					border: none;
 					font-family: "Poppins", sans-serif;
+					transition: 0.3s ease-in;
 
 					&.match {
 						background-color: $easy-difficulty;
@@ -322,9 +329,10 @@ main .container {
 				border: 1px solid #e7e7e7;
 				width: 280px;
 				padding: 20px 0;
+				transition: 0.3s ease-in;
 				hr {
 					margin-bottom: 25px;
-					background-color: #07679f48;
+					border-color: #07679f48;
 				}
 				h3 {
 					position: relative;
@@ -332,6 +340,7 @@ main .container {
 					color: $default-blue-color;
 					margin-bottom: 40px;
 					text-align: center;
+					transition: 0.3s ease-in;
 				}
 				h3::before {
 					content: "";
@@ -353,6 +362,7 @@ main .container {
 						width: 90%;
 						line-height: 27px;
 						color: #585858;
+						transition: 0.3s ease-in;
 					}
 					p:nth-child(2) {
 						margin-top: 25px;

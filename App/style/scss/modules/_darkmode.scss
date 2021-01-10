@@ -1,0 +1,38 @@
+@import "./var";
+
+body.darkmode {
+	background-color: #162e41;
+}
+
+body.darkmode .game {
+	main {
+		background-color: #212d39 !important;
+		p {
+			color: white !important;
+		}
+		span.correct {
+			color: $easy-difficulty;
+			background-color: lighten($color: #63ff2621, $amount: 10) !important;
+		}
+		span.incorrect {
+			color: $hard-difficulty;
+			background-color: lighten($color: #ff262621, $amount: 10) !important;
+		}
+
+		.input input {
+			background-color: #1b222a !important;
+			color: white !important;
+		}
+	}
+}
+body.darkmode aside.instructions {
+	main {
+		background-color: #1e3349 !important;
+		h3 {
+			color: $default-yellow-color !important;
+		}
+		p {
+			color: white !important;
+		}
+	}
+}
