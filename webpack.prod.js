@@ -1,16 +1,12 @@
-const path = require("path");
+const { merge } = require("webpack-merge");
+const common = require("./webpack.common");
 const htmlWebpackPlugin = require("html-webpack-plugin");
 const miniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const terserPlugin = require("terser-webpack-plugin");
 
-module.exports = {
+module.exports = merge(common, {
 	mode: "production",
-	entry: "./index.js",
-	output: {
-		path: path.resolve(__dirname, "Dist"),
-		filename: "bundle.js",
-	},
 	module: {
 		rules: [
 			{
@@ -39,4 +35,4 @@ module.exports = {
 			filename: "./style/css/style.css",
 		}),
 	],
-};
+});

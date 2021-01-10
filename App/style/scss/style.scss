@@ -16,223 +16,450 @@ html body {
 }
 
 body > header {
-	background-color: #4095e8;
+	background-color: $default-yellow-color;
 	nav {
 		text-align: center;
-		h1 {
-			color: white;
-			font-size: 24px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		h2 {
+			font-size: 23px;
+			color: $default-blue-color;
+		}
+		.set-theme {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			span:first-child {
+				display: inline-block;
+				width: 35px;
+				height: 20px;
+				border-radius: 999px;
+				background-color: white;
+			}
+			span:nth-child(2) {
+				position: absolute;
+				display: inline-block;
+				top: 0;
+				left: 0;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background-color: $default-blue-color;
+				transform: translateX(17px);
+				cursor: pointer;
+				transition: 0.2s ease;
+			}
+			span:nth-child(2).dark-mode-active {
+				transform: translateX(32px);
+			}
+			p {
+				font-weight: 500;
+				font-size: 13px;
+			}
 		}
 	}
 }
 
 main .container {
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-	margin-top: 50px;
+	display: grid;
+	grid-template-columns: 30% auto 30%;
+	grid-template-areas: "score-board game instructions";
+	margin-top: 30px;
+	min-height: 75vh;
 
 	.game {
-		flex: 1.5;
-		margin: 0 50px;
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		margin: 0 20px;
+		grid-area: game;
 
-		header {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			margin-bottom: 40px;
-			h4 {
-				width: 250px;
-				font-size: 16px;
-				text-align: center;
+		h2 {
+			width: 250px;
+			font-size: 35px;
+			text-align: center;
+			color: $default-yellow-color;
+			text-shadow: -3px 3px 2px $default-blue-color;
+		}
+		main {
+			position: relative;
+			width: 100%;
+			margin: 50px 0 30px 0;
+			padding-bottom: 70px;
+			background-color: #f9f9f9;
+			box-shadow: 3px 3px 10px #63636331;
+			border-radius: 10px;
+			p {
+				margin-top: 30px;
+				padding: 10px 20px;
+				font-size: 15px;
+				color: #4e4e4e;
 				span {
 					display: inline-block;
-					width: 100px;
-					height: 35px;
-					text-align: center;
-					line-height: 35px;
-					background-color: #f3f3f3;
+					padding: 3px;
+					margin: 1px;
 					border-radius: 5px;
-					cursor: pointer;
-					margin-left: 5px;
+				}
+				span.word.active {
+					background-color: rgba(211, 211, 211, 0.308);
+				}
+				span.correct {
+					color: $easy-difficulty;
+					background-color: lighten($color: $easy-difficulty, $amount: 40);
+				}
+				span.incorrect {
+					color: $hard-difficulty;
+					background-color: lighten($color: $hard-difficulty, $amount: 30);
 				}
 			}
-			.difficulty-option {
+			.input {
 				position: absolute;
-				margin: 30px 0 0 107px;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				width: 100px;
-				background-color: #f3f3f3;
-				transform: translateY(20px);
-				visibility: hidden;
-				content-visibility: hidden;
-				opacity: 0;
-				transition: 0.2s ease;
-				span {
-					font-weight: bold;
-					margin: 5px 0;
-					cursor: pointer;
-					&:hover {
-						color: #515151;
+				bottom: 0;
+				width: 100%;
+				border-bottom-left-radius: 10px;
+				border-bottom-right-radius: 10px;
+				overflow: hidden;
+				input {
+					padding: 13px 50px 13px 20px;
+					width: 100%;
+					outline: none;
+					border: none;
+					font-family: "Poppins", sans-serif;
+
+					&.match {
+						background-color: $easy-difficulty;
+					}
+					&.not-match {
+						background-color: $hard-difficulty;
 					}
 				}
-				&.is-visible {
-					visibility: visible;
-					content-visibility: auto;
-					transform: translateY(0);
-					opacity: 1;
+				input::placeholder {
+					color: $default-blue-color;
+				}
+				span {
+					position: absolute;
+					top: 50%;
+					right: 20px;
+					transform: translateY(-50%);
+					display: inline-block;
+					width: 13px;
+					height: 13px;
+					background-color: $hard-difficulty;
+					box-shadow: 0 0 3px $hard-difficulty;
+					border-radius: 50%;
+				}
+				span.correct {
+					background-color: $easy-difficulty;
+					box-shadow: 0 0 3px $easy-difficulty;
 				}
 			}
-			h1 {
-				font-size: 40px;
+		}
+		main::after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translate(-50%, -55%);
+			width: 55px;
+			height: 55px;
+			background-color: $default-yellow-color;
+			border-radius: 50%;
+		}
+
+		main::before {
+			content: "";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: $default-blue-color;
+			z-index: -1;
+			border-radius: 10px;
+			transform: translateY(-10px);
+		}
+		.difficulty-option {
+			width: 100px;
+			text-align: center;
+			border-radius: 10px;
+			background-color: $default-blue-color;
+			color: white;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+			transition: 0.2s ease;
+			cursor: pointer;
+			span {
+				font-size: 14px;
+				padding: 5px 10px;
+				visibility: hidden;
+				opacity: 0;
+				&:hover {
+					background-color: lighten($color: $default-blue-color, $amount: 3);
+				}
+			}
+			span.visible {
+				visibility: visible;
+				opacity: 1;
 			}
 		}
-		input {
-			margin-bottom: 10px;
-			width: 100%;
-			padding: 13px 10px;
+		button {
+			width: 100px;
+			padding: 8px 10px;
+			text-align: center;
+			height: auto;
+			border-radius: 10px;
+			margin-top: 10px;
+			background-color: $default-blue-color;
+			color: white;
 			outline: none;
 			border: none;
-			background-color: #f3f3f3;
-			box-shadow: 3px 3px 5px #b8b8b85d;
-			font-family: "Poppins", sans-serif;
-
-			&.match {
-				background-color: $easy-difficulty;
-			}
-			&.not-match {
-				background-color: $hard-difficulty;
-			}
-		}
-
-		p {
-			color: $easy-difficulty;
-			font-weight: 600;
-			text-align: center;
-		}
-
-		.time-and-score {
-			margin: 30px 0;
-			p {
-				color: #515151;
-				font-weight: unset;
-			}
-		}
-
-		button {
-			padding: 5px 10px;
-			background-color: #4095e8;
-			border: none;
-			border-radius: 5px;
 			cursor: pointer;
 			visibility: hidden;
+			display: none;
 		}
-		button:focus {
-			outline: none;
+		button.visible {
+			visibility: visible;
+			display: unset;
 		}
 	}
 
 	aside {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		flex: 1;
-		background-color: #f3f3f3;
-		box-shadow: 3px 3px 5px #b8b8b85d;
-		border-radius: 5px;
-		padding: 15px 20px;
+		margin-top: 30px;
 
 		&.score-board {
-			p {
-				font-weight: 600;
-			}
-			p:nth-child(2) {
-				color: $easy-difficulty;
-			}
-			p:nth-child(3) {
-				color: $medium-difficulty;
-			}
-			p:last-child {
-				color: $hard-difficulty;
-			}
-		}
-		p {
-			font-size: 14px;
-			color: #818181;
-		}
-		header {
-			margin-bottom: 10px;
-			display: flex;
-			align-items: center;
-			span {
-				display: inline-block;
-				background-color: $medium-difficulty;
-				border-radius: 50%;
-				width: 25px;
-				height: 25px;
-				margin-right: 5px;
-			}
-			p {
-				font-weight: 600;
-			}
-		}
-	}
-	aside:first-child {
-		height: 130px;
-	}
+			justify-content: start;
+			align-items: flex-start;
+			main {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				span#pin {
+					display: inline-block;
+					position: relative;
+					width: 25px;
+					height: 25px;
+					background-color: $default-yellow-color;
+					border-radius: 50%;
+				}
 
-	aside:last-child span:first-child {
-		color: $easy-difficulty;
-		font-weight: 600;
-	}
-	aside:last-child span:nth-child(2) {
-		color: $medium-difficulty;
-		font-weight: 600;
-	}
-	aside:last-child span:last-child {
-		color: $hard-difficulty;
-		font-weight: 600;
+				span#pin::before,
+				span#pin::after {
+					content: "";
+					position: absolute;
+					z-index: -1;
+					display: inline-block;
+					width: 35px;
+					height: 2px;
+					background-color: #222222;
+					transform: translate(7px, 23px) rotate(50deg);
+				}
+				span#pin::after {
+					transform: translate(-15px, 23px) rotate(-50deg);
+				}
+				.board {
+					width: 280px;
+					margin-top: 10px;
+					height: 170px;
+					background-color: $default-blue-color;
+					transform: rotate(2deg);
+					border-radius: 8px;
+					padding: 20px;
+					box-shadow: -3px 3px 0px 2px #2e546d;
+					transition: 0.2s ease;
+
+					&:hover {
+						transform: rotate(0);
+					}
+					h3 {
+						position: relative;
+						font-weight: 600;
+						color: white;
+						margin-bottom: 15px;
+						text-align: center;
+					}
+					h3::before {
+						content: "";
+						position: absolute;
+						bottom: -5px;
+						left: 50%;
+						transform: translateX(-50%);
+						width: 40%;
+						height: 2px;
+						background-color: $default-yellow-color;
+					}
+					p {
+						font-weight: 500;
+						margin: 5px 0;
+					}
+					p:nth-child(2) {
+						color: $easy-difficulty;
+					}
+					p:nth-child(3) {
+						color: $medium-difficulty;
+					}
+					p:last-child {
+						color: $hard-difficulty;
+					}
+				}
+			}
+			h1#score {
+				margin-top: 50px;
+				font-family: "Covered By Your Grace", cursive;
+				color: $default-yellow-color;
+				text-shadow: -3px 3px 2px $default-blue-color;
+			}
+		}
+		&.instructions {
+			align-items: flex-end;
+			grid-area: instructions;
+			main {
+				position: relative;
+				background-color: #f9f9f9;
+				border: 1px solid #e7e7e7;
+				width: 280px;
+				padding: 20px 0;
+				hr {
+					margin-bottom: 25px;
+					background-color: #07679f48;
+				}
+				h3 {
+					position: relative;
+					font-weight: 600;
+					color: $default-blue-color;
+					margin-bottom: 40px;
+					text-align: center;
+				}
+				h3::before {
+					content: "";
+					position: absolute;
+					bottom: -5px;
+					left: 50%;
+					transform: translateX(-50%);
+					width: 40%;
+					height: 2px;
+					background-color: $default-yellow-color;
+				}
+				.text {
+					position: absolute;
+					top: 18%;
+					margin-left: 40px;
+
+					p {
+						font-size: 14px;
+						width: 90%;
+						line-height: 27px;
+						color: #585858;
+					}
+					p:nth-child(2) {
+						margin-top: 25px;
+						color: $hard-difficulty;
+						font-weight: 600;
+						font-size: 15px;
+					}
+					P:nth-child(3) {
+						margin-top: 4px;
+					}
+				}
+				span#line {
+					position: absolute;
+					top: 5px;
+					left: 20px;
+					height: 370px;
+					width: 2px;
+					background-color: $default-blue-color;
+				}
+				p span:first-child {
+					color: $easy-difficulty;
+					font-weight: 600;
+				}
+				p span:nth-child(2) {
+					color: $medium-difficulty;
+					font-weight: 600;
+				}
+				p span:last-child {
+					color: $hard-difficulty;
+					font-weight: 600;
+				}
+			}
+		}
 	}
 }
 
-@media screen and(max-width: 1200px) {
+footer {
+	background-color: #1d4468;
+	text-align: center;
+	color: white;
+	font-size: 13px;
+	padding: 8px 0;
+	margin-top: 50px;
+}
+
+@media screen and(max-width: 1300px) {
 	.container {
 		padding: 10px 70px;
 	}
 }
 
-@media screen and(max-width: 768px) {
+@media screen and(max-width: 1150px) {
+	.container {
+		padding: 10px 120px;
+	}
+	main .container {
+		grid-template-columns: 40% auto;
+		grid-template-areas:
+			"game game"
+			"score-board instructions";
+		.game {
+			margin-bottom: 40px;
+		}
+		aside {
+			&.instructions {
+				align-items: unset;
+				main {
+					width: 100% !important;
+					min-height: 260px;
+					max-height: 340px;
+					overflow: hidden;
+					.text {
+						top: 95px !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and(max-width: 992px) {
 	.container {
 		padding: 10px 60px;
 	}
+}
+
+@media screen and(max-width: 880px) {
+	.container {
+		padding: 10px 80px;
+	}
 	main .container {
-		flex-direction: column;
-		align-items: center;
+		grid-template-columns: 100%;
+		grid-template-areas:
+			"game"
+			"instructions"
+			"score-board";
 		.game {
-			flex: unset;
-			order: 1;
-			width: 100%;
-			margin: 0 35px;
-			input {
-				width: 100%;
-			}
+			margin: 0;
 		}
 		aside {
-			width: 100%;
-			flex: unset;
-		}
-		aside:first-child {
-			order: 2;
-			margin: 30px 0;
-		}
-		aside:last-child {
-			margin-bottom: 50px;
-			order: 3;
+			&.score-board {
+				align-items: center !important;
+				margin: 0;
+			}
+			&.instructions {
+				margin: 60px 0;
+			}
 		}
 	}
 }

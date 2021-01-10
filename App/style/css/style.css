@@ -11,6 +11,7 @@ html body {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  min-height: 100vh;
 }
 
 .container {
@@ -18,36 +19,29 @@ html body {
 }
 
 body > header {
-  background-color: #4095e8;
+  background-color: #ffc93c;
 }
 
 body > header nav {
   text-align: center;
-}
-
-body > header nav h1 {
-  color: white;
-  font-size: 24px;
-}
-
-main .container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  margin-top: 50px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-main .container .game {
-  -webkit-box-flex: 1.5;
-      -ms-flex: 1.5;
-          flex: 1.5;
-  margin: 0 50px;
+body > header nav h2 {
+  font-size: 23px;
+  color: #07689f;
+}
+
+body > header nav .set-theme {
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -60,130 +54,242 @@ main .container .game {
           align-items: center;
 }
 
-main .container .game header {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin-bottom: 40px;
-}
-
-main .container .game header h4 {
-  width: 250px;
-  font-size: 16px;
-  text-align: center;
-}
-
-main .container .game header h4 span {
+body > header nav .set-theme span:first-child {
   display: inline-block;
-  width: 100px;
-  height: 35px;
-  text-align: center;
-  line-height: 35px;
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 5px;
+  width: 35px;
+  height: 20px;
+  border-radius: 999px;
+  background-color: white;
 }
 
-main .container .game header .difficulty-option {
+body > header nav .set-theme span:nth-child(2) {
   position: absolute;
-  margin: 30px 0 0 107px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 100px;
-  background-color: #f3f3f3;
-  -webkit-transform: translateY(20px);
-          transform: translateY(20px);
-  visibility: hidden;
-  content-visibility: hidden;
-  opacity: 0;
+  display: inline-block;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #07689f;
+  -webkit-transform: translateX(10px);
+          transform: translateX(10px);
+  cursor: pointer;
   -webkit-transition: 0.2s ease;
   transition: 0.2s ease;
 }
 
-main .container .game header .difficulty-option span {
-  font-weight: bold;
-  margin: 5px 0;
-  cursor: pointer;
+body > header nav .set-theme span:nth-child(2).dark-mode-active {
+  -webkit-transform: translateX(32px);
+          transform: translateX(32px);
 }
 
-main .container .game header .difficulty-option span:hover {
-  color: #515151;
+body > header nav .set-theme p {
+  font-weight: 500;
+  font-size: 13px;
 }
 
-main .container .game header .difficulty-option.is-visible {
-  visibility: visible;
-  content-visibility: auto;
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
-  opacity: 1;
+main .container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 30% auto 30%;
+      grid-template-columns: 30% auto 30%;
+      grid-template-areas: "score-board game instructions";
+  margin-top: 30px;
 }
 
-main .container .game header h1 {
-  font-size: 40px;
+main .container .game {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0 20px;
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: game;
 }
 
-main .container .game input {
-  margin-bottom: 10px;
+main .container .game h2 {
+  width: 250px;
+  font-size: 35px;
+  text-align: center;
+  color: #ffc93c;
+  text-shadow: -3px 3px 2px #07689f;
+}
+
+main .container .game main {
+  position: relative;
   width: 100%;
-  padding: 13px 10px;
+  margin: 50px 0 30px 0;
+  padding-bottom: 70px;
+  background-color: #f9f9f9;
+  -webkit-box-shadow: 3px 3px 10px #63636331;
+          box-shadow: 3px 3px 10px #63636331;
+  border-radius: 10px;
+}
+
+main .container .game main p {
+  margin-top: 30px;
+  padding: 10px 20px;
+  font-size: 15px;
+  color: #4e4e4e;
+  line-height: 26px;
+}
+
+main .container .game main p span.correct {
+  color: #2aeb62;
+}
+
+main .container .game main p span.incorrect {
+  color: #fd4848;
+  text-decoration: underline;
+}
+
+main .container .game main .input {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+}
+
+main .container .game main .input input {
+  padding: 13px 50px 13px 20px;
+  width: 100%;
   outline: none;
   border: none;
-  background-color: #f3f3f3;
-  -webkit-box-shadow: 3px 3px 5px #b8b8b85d;
-          box-shadow: 3px 3px 5px #b8b8b85d;
   font-family: "Poppins", sans-serif;
 }
 
-main .container .game input.match {
+main .container .game main .input input.match {
   background-color: #2aeb62;
 }
 
-main .container .game input.not-match {
+main .container .game main .input input.not-match {
   background-color: #fd4848;
 }
 
-main .container .game p {
-  color: #2aeb62;
-  font-weight: 600;
+main .container .game main .input input::-webkit-input-placeholder {
+  color: #07689f;
+}
+
+main .container .game main .input input:-ms-input-placeholder {
+  color: #07689f;
+}
+
+main .container .game main .input input::-ms-input-placeholder {
+  color: #07689f;
+}
+
+main .container .game main .input input::placeholder {
+  color: #07689f;
+}
+
+main .container .game main .input span {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  background-color: #fd4848;
+  -webkit-box-shadow: 0 0 3px #fd4848;
+          box-shadow: 0 0 3px #fd4848;
+  border-radius: 50%;
+}
+
+main .container .game main .input span.correct {
+  background-color: #2aeb62;
+  -webkit-box-shadow: 0 0 3px #2aeb62;
+          box-shadow: 0 0 3px #2aeb62;
+}
+
+main .container .game main::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, -55%);
+          transform: translate(-50%, -55%);
+  width: 55px;
+  height: 55px;
+  background-color: #ffc93c;
+  border-radius: 50%;
+}
+
+main .container .game main::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #07689f;
+  z-index: -1;
+  border-radius: 10px;
+  -webkit-transform: translateY(-10px);
+          transform: translateY(-10px);
+}
+
+main .container .game .difficulty-option {
+  width: 100px;
   text-align: center;
+  height: auto;
+  border-radius: 10px;
+  background-color: #07689f;
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-main .container .game .time-and-score {
-  margin: 30px 0;
+main .container .game .difficulty-option span {
+  font-size: 14px;
+  padding: 5px 10px;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
 }
 
-main .container .game .time-and-score p {
-  color: #515151;
-  font-weight: unset;
+main .container .game .difficulty-option span:hover {
+  background-color: #0872ae;
+}
+
+main .container .game .difficulty-option span.hidden {
+  visibility: hidden;
+  display: none;
 }
 
 main .container .game button {
-  padding: 5px 10px;
-  background-color: #4095e8;
+  width: 100px;
+  padding: 8px 10px;
+  text-align: center;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 10px;
+  background-color: #07689f;
+  color: white;
+  outline: none;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
   visibility: hidden;
+  display: none;
 }
 
-main .container .game button:focus {
-  outline: none;
+main .container .game button.visible {
+  visibility: visible;
+  display: unset;
 }
 
 main .container aside {
@@ -197,128 +303,275 @@ main .container aside {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  background-color: #f3f3f3;
-  -webkit-box-shadow: 3px 3px 5px #b8b8b85d;
-          box-shadow: 3px 3px 5px #b8b8b85d;
-  border-radius: 5px;
-  padding: 15px 20px;
+  margin-top: 30px;
 }
 
-main .container aside.score-board p {
-  font-weight: 600;
+main .container aside.score-board {
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
-main .container aside.score-board p:nth-child(2) {
-  color: #2aeb62;
-}
-
-main .container aside.score-board p:nth-child(3) {
-  color: #ddcc36;
-}
-
-main .container aside.score-board p:last-child {
-  color: #fd4848;
-}
-
-main .container aside p {
-  font-size: 14px;
-  color: #818181;
-}
-
-main .container aside header {
-  margin-bottom: 10px;
+main .container aside.score-board main {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
 }
 
-main .container aside header span {
+main .container aside.score-board main span#pin {
   display: inline-block;
-  background-color: #ddcc36;
-  border-radius: 50%;
+  position: relative;
   width: 25px;
   height: 25px;
-  margin-right: 5px;
+  background-color: #ffc93c;
+  border-radius: 50%;
 }
 
-main .container aside header p {
+main .container aside.score-board main span#pin::before,
+main .container aside.score-board main span#pin::after {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 35px;
+  height: 2px;
+  background-color: #222222;
+  -webkit-transform: translate(7px, 23px) rotate(50deg);
+          transform: translate(7px, 23px) rotate(50deg);
+}
+
+main .container aside.score-board main span#pin::after {
+  -webkit-transform: translate(-15px, 23px) rotate(-50deg);
+          transform: translate(-15px, 23px) rotate(-50deg);
+}
+
+main .container aside.score-board main .board {
+  width: 280px;
+  margin-top: 10px;
+  height: 170px;
+  background-color: #07689f;
+  -webkit-transform: rotate(2deg);
+          transform: rotate(2deg);
+  border-radius: 8px;
+  padding: 20px;
+  -webkit-box-shadow: -3px 3px 0px 2px #2e546d;
+          box-shadow: -3px 3px 0px 2px #2e546d;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+
+main .container aside.score-board main .board:hover {
+  -webkit-transform: rotate(0);
+          transform: rotate(0);
+}
+
+main .container aside.score-board main .board h3 {
+  position: relative;
   font-weight: 600;
+  color: white;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
-main .container aside:first-child {
-  height: 130px;
+main .container aside.score-board main .board h3::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 40%;
+  height: 2px;
+  background-color: #ffc93c;
 }
 
-main .container aside:last-child span:first-child {
+main .container aside.score-board main .board p {
+  font-weight: 500;
+  margin: 5px 0;
+}
+
+main .container aside.score-board main .board p:nth-child(2) {
+  color: #2aeb62;
+}
+
+main .container aside.score-board main .board p:nth-child(3) {
+  color: #ddcc36;
+}
+
+main .container aside.score-board main .board p:last-child {
+  color: #fd4848;
+}
+
+main .container aside.instructions {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+  grid-area: instructions;
+}
+
+main .container aside.instructions main {
+  position: relative;
+  background-color: #f9f9f9;
+  border: 1px solid #e7e7e7;
+  width: 280px;
+  padding: 20px 0;
+}
+
+main .container aside.instructions main hr {
+  margin-bottom: 25px;
+  background-color: #07679f48;
+}
+
+main .container aside.instructions main h3 {
+  position: relative;
+  font-weight: 600;
+  color: #07689f;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+main .container aside.instructions main h3::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 40%;
+  height: 2px;
+  background-color: #ffc93c;
+}
+
+main .container aside.instructions main .text {
+  position: absolute;
+  top: 18%;
+  margin-left: 40px;
+}
+
+main .container aside.instructions main .text p {
+  font-size: 14px;
+  width: 90%;
+  line-height: 27px;
+  color: #585858;
+}
+
+main .container aside.instructions main .text p:nth-child(2) {
+  margin-top: 25px;
+  color: #fd4848;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+main .container aside.instructions main .text P:nth-child(3) {
+  margin-top: 4px;
+}
+
+main .container aside.instructions main span#line {
+  position: absolute;
+  top: 5px;
+  left: 20px;
+  height: 370px;
+  width: 2px;
+  background-color: #07689f;
+}
+
+main .container aside.instructions main p span:first-child {
   color: #2aeb62;
   font-weight: 600;
 }
 
-main .container aside:last-child span:nth-child(2) {
+main .container aside.instructions main p span:nth-child(2) {
   color: #ddcc36;
   font-weight: 600;
 }
 
-main .container aside:last-child span:last-child {
+main .container aside.instructions main p span:last-child {
   color: #fd4848;
   font-weight: 600;
 }
 
-@media screen and (max-width: 1200px) {
+footer {
+  background-color: #1d4468;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  padding: 8px 0;
+  margin-top: 50px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+@media screen and (max-width: 1300px) {
   .container {
     padding: 10px 70px;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1150px) {
+  .container {
+    padding: 10px 120px;
+  }
+  main .container {
+    -ms-grid-columns: 40% auto;
+        grid-template-columns: 40% auto;
+        grid-template-areas: "game game" "score-board instructions";
+  }
+  main .container .game {
+    margin-bottom: 40px;
+  }
+  main .container aside.instructions {
+    -webkit-box-align: unset;
+        -ms-flex-align: unset;
+            align-items: unset;
+  }
+  main .container aside.instructions main {
+    width: 100% !important;
+    height: 240px;
+    overflow: hidden;
+  }
+  main .container aside.instructions main .text {
+    top: 28% !important;
+  }
+}
+
+@media screen and (max-width: 992px) {
   .container {
     padding: 10px 60px;
   }
+}
+
+@media screen and (max-width: 880px) {
+  .container {
+    padding: 10px 80px;
+  }
   main .container {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -ms-grid-columns: 100%;
+        grid-template-columns: 100%;
+        grid-template-areas: "game" "instructions" "score-board";
   }
   main .container .game {
-    -webkit-box-flex: unset;
-        -ms-flex: unset;
-            flex: unset;
-    -webkit-box-ordinal-group: 2;
-        -ms-flex-order: 1;
-            order: 1;
-    width: 100%;
-    margin: 0 35px;
+    margin: 0;
   }
-  main .container .game input {
-    width: 100%;
+  main .container aside.score-board {
+    -webkit-box-align: center !important;
+        -ms-flex-align: center !important;
+            align-items: center !important;
+    margin: 0;
   }
-  main .container aside {
-    width: 100%;
-    -webkit-box-flex: unset;
-        -ms-flex: unset;
-            flex: unset;
-  }
-  main .container aside:first-child {
-    -webkit-box-ordinal-group: 3;
-        -ms-flex-order: 2;
-            order: 2;
-    margin: 30px 0;
-  }
-  main .container aside:last-child {
-    margin-bottom: 50px;
-    -webkit-box-ordinal-group: 4;
-        -ms-flex-order: 3;
-            order: 3;
+  main .container aside.instructions {
+    margin: 60px 0;
   }
 }
 
