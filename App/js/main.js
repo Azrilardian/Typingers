@@ -1,6 +1,22 @@
 const typeingGame = () => {
 	const randomWords = require("random-words");
 
+	const skorDisplay = document.querySelector("#score span");
+	const timeDisplay = document.getElementById("time");
+	const input = document.querySelector("input");
+	const infoDisplay = document.getElementById("review-info");
+	const randomWordsDisplay = document.getElementById("random-text");
+	const recentDifficulty = document.getElementById("recent");
+	const easyScore = document.getElementById("easy-score");
+	const medScore = document.getElementById("medium-score");
+	const hardScore = document.getElementById("hard-score");
+	const btnTryAgain = document.querySelector(".game button");
+	let skor = 0;
+	let time = 0;
+	let stopCountDown;
+	let stopGameOver;
+	let isFirstPlay = true;
+
 	const difficultyLevel = {
 		easy: {
 			time: 50,
@@ -13,25 +29,9 @@ const typeingGame = () => {
 		},
 	};
 
-	const skorDisplay = document.querySelector("#score span");
-	const timeDisplay = document.getElementById("time");
-	const input = document.querySelector("input");
-	const infoDisplay = document.getElementById("review-info");
-	const randomWordsDisplay = document.getElementById("random-text");
-	const recentDifficulty = document.getElementById("recent");
-	const easyScore = document.getElementById("easy-score");
-	const medScore = document.getElementById("medium-score");
-	const hardScore = document.getElementById("hard-score");
-	let skor = 0;
-	let isCorrect = true;
-	let time = 0;
-	let stopCountDown;
-	let stopGameOver;
-	let isFirstPlay = true;
-
 	function setUserPreference() {
 		let words = "";
-		switch (recentDifficulty.textContent) {
+		switch (recentDifficulty.innerText) {
 			case "EASY":
 				time = difficultyLevel.easy.time;
 				words = randomWords({
@@ -58,19 +58,8 @@ const typeingGame = () => {
 				break;
 		}
 
-		const sliceWordsInToSpan = () => {
-			// words.split(" ").map((word) => {
-			// 	const spanWord = document.createElement("span");
-			// 	spanWord.classList.add("word");
-			// 	word.split("").map((char) => {
-			// 		const spanChar = document.createElement("span");
-			// 		spanChar.innerText = char;
-			// 		spanWord.appendChild(spanChar);
-			// 	});
-			// 	randomWordsDisplay.appendChild(spanWord);
-			// });
-
-			randomWordsDisplay.textContent = "";
+		const spanEveryWord = () => {
+			randomWordsDisplay.innerText = "";
 			words.split("").map((char) => {
 				const spanChar = document.createElement("span");
 				spanChar.innerText = char;
@@ -78,12 +67,22 @@ const typeingGame = () => {
 			});
 		};
 
-		input.value = null;
-		input.removeAttribute("disabled");
-		input.focus();
-		timeDisplay.textContent = time;
-		sliceWordsInToSpan();
+		timeDisplay.innerText = time;
+
+		spanEveryWord();
 	}
+
+	const resetRecentGameData = (resetSkor) => {
+		input.value = null;
+		input.disabled = false;
+		input.focus();
+		timeDisplay.innerText = time;
+		btnTryAgain.classList.remove("visible");
+		if (resetSkor) {
+			skor = 0;
+			skorDisplay.innerText = skor;
+		}
+	};
 
 	const difficultySelect = () => {
 		const difficultyOptionContainer = document.querySelector(".difficulty-option");
@@ -94,8 +93,9 @@ const typeingGame = () => {
 		difficultyOption.forEach((e) => {
 			e.addEventListener("click", () => {
 				if (e.id !== "recent") {
-					[recentDifficulty.textContent, e.textContent] = [e.textContent, recentDifficulty.textContent];
+					[recentDifficulty.innerText, e.innerText] = [e.innerText, recentDifficulty.innerText];
 					difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
+					resetRecentGameData(true);
 					setUserPreference();
 				} else {
 					difficultyOption[1].classList.toggle("visible");
@@ -106,7 +106,7 @@ const typeingGame = () => {
 					} else {
 						difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
 					}
-					// syncWithLocalStorage(e.textContent.trim());
+					// syncWithLocalStorage(e.innerText.trim());
 				}
 			});
 		});
@@ -114,15 +114,14 @@ const typeingGame = () => {
 	difficultySelect();
 
 	function gameStart() {
+		resetRecentGameData(true);
 		setUserPreference();
 		input.addEventListener("input", () => {
+			matchText();
 			if (isFirstPlay && input.value.length > 0) {
-				matchText();
 				stopCountDown = setInterval(countDown, 1000);
 				stopGameOver = setInterval(gameOver, 50);
 				isFirstPlay = false;
-			} else {
-				matchText();
 			}
 		});
 	}
@@ -131,27 +130,36 @@ const typeingGame = () => {
 	const matchText = () => {
 		const arrayWords = randomWordsDisplay.querySelectorAll("span");
 		const arrayValue = input.value.split("");
+		let errorCount = 0;
+		let isCorrect = false;
 
 		arrayWords.forEach((char, index) => {
-			const character = arrayValue[index];
-			if (character == null) {
+			let character = arrayValue[index];
+			const chartacterBelumDiKlik = character == null;
+			const characterSame = character == char.textContent;
+
+			if (chartacterBelumDiKlik) {
 				char.classList.remove("incorrect");
+				char.classList.remove("correct");
 				isCorrect = false;
-			} else if (character === char.innerText) {
+			} else if (characterSame) {
 				char.classList.add("correct");
 				char.classList.remove("incorrect");
 				infoDisplay.classList.add("correct");
 				isCorrect = true;
 			} else {
-				char.classList.add("incorrect");
 				char.classList.remove("correct");
+				char.classList.add("incorrect");
 				infoDisplay.classList.remove("correct");
 				isCorrect = false;
+				++errorCount;
 			}
 		});
-		if (isCorrect) {
-			skorDisplay.textContent = ++skor;
+
+		if (isCorrect && !!!errorCount) {
+			resetRecentGameData(false);
 			setUserPreference();
+			skorDisplay.innerText = ++skor;
 		}
 	};
 
@@ -162,24 +170,23 @@ const typeingGame = () => {
 			clearInterval(stopCountDown);
 			checkHighScore();
 		}
-		timeDisplay.textContent = time;
+		timeDisplay.innerText = time;
 	}
 
 	const gameOver = () => {
 		if (time === 0) {
-			const btnTryAgain = document.querySelector(".game button");
-			input.setAttribute("disabled", "");
+			input.disabled = true;
 			btnTryAgain.classList.add("visible");
+
 			btnTryAgain.addEventListener("click", () => {
 				isFirstPlay = true;
 				gameStart();
-				btnTryAgain.classList.remove("visible");
 			});
+
 			document.addEventListener("keyup", (e) => {
 				if (e.keyCode === 13) {
 					isFirstPlay = true;
 					gameStart();
-					btnTryAgain.classList.remove("visible");
 				}
 			});
 			clearInterval(stopGameOver);
@@ -187,36 +194,36 @@ const typeingGame = () => {
 	};
 
 	const checkHighScore = () => {
-		switch (recentDifficulty.textContent) {
+		switch (recentDifficulty.innerText) {
 			case "EASY":
-				if (skor > Number(easyScore.textContent)) {
-					easyScore.textContent = skor;
-					// syncWithLocalStorage(recentDifficulty.textContent, skor, medScore.textContent, hardScore.textContent);
+				if (skor > Number(easyScore.innerText)) {
+					easyScore.innerText = skor;
+					// syncWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
 				}
 				break;
 			case "MEDIUM":
-				if (skor > Number(medScore.textContent)) {
-					medScore.textContent = skor;
-					// syncWithLocalStorage(recentDifficulty.textContent, easyScore.textContent, skor, hardScore.textContent);
+				if (skor > Number(medScore.innerText)) {
+					medScore.innerText = skor;
+					// syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
 				}
 				break;
 			case "HARD":
-				if (skor > Number(hardScore.textContent)) {
-					hardScore.textContent = skor;
-					// syncWithLocalStorage(recentDifficulty.textContent, easyScore.textContent, medScore.textContent, skor);
+				if (skor > Number(hardScore.innerText)) {
+					hardScore.innerText = skor;
+					// syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
 				}
 				break;
 		}
 	};
 
-	const darkModeFitures = () => {
+	const darkModeFeatures = () => {
 		const toggle = document.querySelector(".set-theme .darkmode-toggle");
 		toggle.addEventListener("click", function () {
 			this.classList.toggle("dark-mode-active");
 			document.body.classList.toggle("darkmode");
 		});
 	};
-	darkModeFitures();
+	darkModeFeatures();
 
 	// const TYPEING_STORAGE = "TYPEING STORAGE";
 	// let todos = {};
@@ -231,11 +238,11 @@ const typeingGame = () => {
 	// const dataFromLocal = localStorage.getItem(TYPEING_STORAGE);
 	// if (dataFromLocal) {
 	// 	const data = JSON.parse(dataFromLocal);
-	// 	recentDifficulty.textContent = data.difficulty;
+	// 	recentDifficulty.innerText = data.difficulty;
 	// 	const [easyHighScore, medHighScore, hardHighScore] = data.score;
-	// 	easyScore.textContent = easyHighScore;
-	// 	medScore.textContent = medHighScore;
-	// 	hardScore.textContent = hardHighScore;
+	// 	easyScore.innerText = easyHighScore;
+	// 	medScore.innerText = medHighScore;
+	// 	hardScore.innerText = hardHighScore;
 	// 	syncWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
 	// }
 };

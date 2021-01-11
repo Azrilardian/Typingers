@@ -1,3 +1,47 @@
+body.darkmode {
+  background-color: #162e41;
+}
+
+body.darkmode .game main {
+  background-color: #212d39 !important;
+}
+
+body.darkmode .game main p {
+  color: white !important;
+}
+
+body.darkmode .game main span.correct {
+  color: #2aeb62;
+  background-color: #63ff2617 !important;
+}
+
+body.darkmode .game main span.incorrect {
+  color: #fd4848;
+  background-color: #ff262611 !important;
+}
+
+body.darkmode .game main .input input {
+  background-color: #1b222a !important;
+  color: white !important;
+}
+
+body.darkmode aside.score-board main span#pin::before,
+body.darkmode aside.score-board main span#pin::after {
+  background-color: white !important;
+}
+
+body.darkmode aside.instructions main {
+  background-color: #1e3349 !important;
+}
+
+body.darkmode aside.instructions main h3 {
+  color: #ffc93c !important;
+}
+
+body.darkmode aside.instructions main p {
+  color: white !important;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -11,7 +55,8 @@ html body {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  min-height: 100vh;
+  -webkit-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
 }
 
 .container {
@@ -71,8 +116,8 @@ body > header nav .set-theme span:nth-child(2) {
   height: 20px;
   border-radius: 50%;
   background-color: #07689f;
-  -webkit-transform: translateX(10px);
-          transform: translateX(10px);
+  -webkit-transform: translateX(17px);
+          transform: translateX(17px);
   cursor: pointer;
   -webkit-transition: 0.2s ease;
   transition: 0.2s ease;
@@ -95,9 +140,11 @@ main .container {
       grid-template-columns: 30% auto 30%;
       grid-template-areas: "score-board game instructions";
   margin-top: 30px;
+  min-height: 75vh;
 }
 
 main .container .game {
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -131,6 +178,8 @@ main .container .game main {
   -webkit-box-shadow: 3px 3px 10px #63636331;
           box-shadow: 3px 3px 10px #63636331;
   border-radius: 10px;
+  -webkit-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
 }
 
 main .container .game main p {
@@ -138,16 +187,31 @@ main .container .game main p {
   padding: 10px 20px;
   font-size: 15px;
   color: #4e4e4e;
-  line-height: 26px;
+  -webkit-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
+}
+
+main .container .game main p span {
+  display: inline-block;
+  padding: 3px;
+  min-width: 15px;
+  text-align: center;
+  margin: 1px;
+  border-radius: 5px;
+}
+
+main .container .game main p span.word.active {
+  background-color: #d3d3d34f;
 }
 
 main .container .game main p span.correct {
   color: #2aeb62;
+  background-color: #b6f8c9;
 }
 
 main .container .game main p span.incorrect {
   color: #fd4848;
-  text-decoration: underline;
+  background-color: #ffdfdf;
 }
 
 main .container .game main .input {
@@ -165,6 +229,8 @@ main .container .game main .input input {
   outline: none;
   border: none;
   font-family: "Poppins", sans-serif;
+  -webkit-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
 }
 
 main .container .game main .input input.match {
@@ -240,7 +306,6 @@ main .container .game main::before {
 main .container .game .difficulty-option {
   width: 100px;
   text-align: center;
-  height: auto;
   border-radius: 10px;
   background-color: #07689f;
   color: white;
@@ -252,23 +317,25 @@ main .container .game .difficulty-option {
       -ms-flex-direction: column;
           flex-direction: column;
   overflow: hidden;
+  -webkit-transition: 0.2s ease;
+  transition: 0.2s ease;
   cursor: pointer;
 }
 
 main .container .game .difficulty-option span {
   font-size: 14px;
   padding: 5px 10px;
-  -webkit-transition: 0.2s ease;
-  transition: 0.2s ease;
+  visibility: hidden;
+  opacity: 0;
 }
 
 main .container .game .difficulty-option span:hover {
   background-color: #0872ae;
 }
 
-main .container .game .difficulty-option span.hidden {
-  visibility: hidden;
-  display: none;
+main .container .game .difficulty-option span.visible {
+  visibility: visible;
+  opacity: 1;
 }
 
 main .container .game button {
@@ -300,9 +367,6 @@ main .container aside {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   margin-top: 30px;
 }
 
@@ -341,6 +405,7 @@ main .container aside.score-board main span#pin::before,
 main .container aside.score-board main span#pin::after {
   content: "";
   position: absolute;
+  z-index: -1;
   display: inline-block;
   width: 35px;
   height: 2px;
@@ -411,6 +476,13 @@ main .container aside.score-board main .board p:last-child {
   color: #fd4848;
 }
 
+main .container aside.score-board h1#score {
+  margin-top: 50px;
+  font-family: "Covered By Your Grace", cursive;
+  color: #ffc93c;
+  text-shadow: -3px 3px 2px #07689f;
+}
+
 main .container aside.instructions {
   -webkit-box-align: end;
       -ms-flex-align: end;
@@ -426,11 +498,13 @@ main .container aside.instructions main {
   border: 1px solid #e7e7e7;
   width: 280px;
   padding: 20px 0;
+  -webkit-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
 }
 
 main .container aside.instructions main hr {
   margin-bottom: 25px;
-  background-color: #07679f48;
+  border-color: #07679f48;
 }
 
 main .container aside.instructions main h3 {
@@ -439,6 +513,8 @@ main .container aside.instructions main h3 {
   color: #07689f;
   margin-bottom: 40px;
   text-align: center;
+  -webkit-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
 }
 
 main .container aside.instructions main h3::before {
@@ -464,6 +540,8 @@ main .container aside.instructions main .text p {
   width: 90%;
   line-height: 27px;
   color: #585858;
+  -webkit-transition: 0.3s ease-in;
+  transition: 0.3s ease-in;
 }
 
 main .container aside.instructions main .text p:nth-child(2) {
@@ -505,12 +583,9 @@ footer {
   background-color: #1d4468;
   text-align: center;
   color: white;
-  font-size: 14px;
+  font-size: 13px;
   padding: 8px 0;
   margin-top: 50px;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
 }
 
 @media screen and (max-width: 1300px) {
@@ -538,11 +613,12 @@ footer {
   }
   main .container aside.instructions main {
     width: 100% !important;
-    height: 240px;
+    min-height: 260px;
+    max-height: 340px;
     overflow: hidden;
   }
   main .container aside.instructions main .text {
-    top: 28% !important;
+    top: 95px !important;
   }
 }
 

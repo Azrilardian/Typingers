@@ -12,11 +12,11 @@ body.darkmode .game {
 		}
 		span.correct {
 			color: $easy-difficulty;
-			background-color: lighten($color: #63ff2621, $amount: 10) !important;
+			background-color: #63ff2617 !important;
 		}
 		span.incorrect {
 			color: $hard-difficulty;
-			background-color: lighten($color: #ff262621, $amount: 10) !important;
+			background-color: #ff262611 !important;
 		}
 
 		.input input {
@@ -25,14 +25,26 @@ body.darkmode .game {
 		}
 	}
 }
-body.darkmode aside.instructions {
-	main {
-		background-color: #1e3349 !important;
-		h3 {
-			color: $default-yellow-color !important;
+body.darkmode {
+	aside {
+		&.score-board {
+			main {
+				span#pin::before,
+				span#pin::after {
+					background-color: white !important;
+				}
+			}
 		}
-		p {
-			color: white !important;
+		&.instructions {
+			main {
+				background-color: #1e3349 !important;
+				h3 {
+					color: $default-yellow-color !important;
+				}
+				p {
+					color: white !important;
+				}
+			}
 		}
 	}
 }

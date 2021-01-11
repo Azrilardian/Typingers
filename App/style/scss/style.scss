@@ -114,7 +114,7 @@ main .container {
 				}
 				span.correct {
 					color: $easy-difficulty;
-					background-color: lighten($color: $easy-difficulty, $amount: 10);
+					background-color: lighten($color: $easy-difficulty, $amount: 30);
 				}
 				span.incorrect {
 					color: $hard-difficulty;
