@@ -10,7 +10,6 @@ const typeingGame = () => {
 	const easyScore = document.getElementById("easy-score");
 	const medScore = document.getElementById("medium-score");
 	const hardScore = document.getElementById("hard-score");
-	const btnTryAgain = document.querySelector(".game button");
 	let skor = 0;
 	let time = 0;
 	let stopCountDown;
@@ -72,49 +71,57 @@ const typeingGame = () => {
 		spanEveryWord();
 	}
 
-	const resetRecentGameData = (resetSkor) => {
+	const resetRecentGameData = () => {
 		input.value = null;
 		input.disabled = false;
 		input.focus();
 		timeDisplay.innerText = time;
 		btnTryAgain.classList.remove("visible");
-		if (resetSkor) {
-			skor = 0;
-			skorDisplay.innerText = skor;
-		}
+	};
+
+	const resetRecentGameDataWithScore = () => {
+		input.value = null;
+		input.disabled = false;
+		input.focus();
+		timeDisplay.innerText = time;
+		skor = 0;
+		skorDisplay.innerText = skor;
 	};
 
 	const difficultySelect = () => {
 		const difficultyOptionContainer = document.querySelector(".difficulty-option");
 		const difficultyOption = difficultyOptionContainer.querySelectorAll("span");
 
-		difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
+		const setHeightOptionContainer = (option) => {
+			if (option.classList.contains("visible")) {
+				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight * 3}px`;
+			} else {
+				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
+			}
+		};
 
-		difficultyOption.forEach((e) => {
-			e.addEventListener("click", () => {
-				if (e.id !== "recent") {
-					[recentDifficulty.innerText, e.innerText] = [e.innerText, recentDifficulty.innerText];
-					difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
-					resetRecentGameData(true);
-					setUserPreference();
-				} else {
-					difficultyOption[1].classList.toggle("visible");
-					difficultyOption[2].classList.toggle("visible");
+		setHeightOptionContainer(difficultyOption[1]);
 
-					if (difficultyOption[1].classList.contains("visible")) {
-						difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight * 3}px`;
-					} else {
-						difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
-					}
-					// syncWithLocalStorage(e.innerText.trim());
-				}
+		difficultyOptionContainer.addEventListener("click", () => {
+			difficultyOption[0].id = "recent";
+			difficultyOption.forEach((e) => e.classList.toggle("visible"));
+			setHeightOptionContainer(difficultyOption[1]);
+		});
+
+		difficultyOption.forEach((option) => {
+			option.addEventListener("click", () => {
+				difficultyOption[0].id = "recent";
+				if (option.id == "recent") return;
+				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
+				resetRecentGameDataWithScore();
+				setUserPreference();
 			});
 		});
 	};
 	difficultySelect();
 
 	function gameStart() {
-		resetRecentGameData(true);
+		resetRecentGameDataWithScore();
 		setUserPreference();
 		input.addEventListener("input", () => {
 			matchText();
@@ -157,7 +164,7 @@ const typeingGame = () => {
 		});
 
 		if (isCorrect && !!!errorCount) {
-			resetRecentGameData(false);
+			resetRecentGameData();
 			setUserPreference();
 			skorDisplay.innerText = ++skor;
 		}
@@ -178,17 +185,17 @@ const typeingGame = () => {
 			input.disabled = true;
 			btnTryAgain.classList.add("visible");
 
-			btnTryAgain.addEventListener("click", () => {
-				isFirstPlay = true;
-				gameStart();
-			});
+			// btnTryAgain.addEventListener("click", () => {
+			// 	isFirstPlay = true;
+			// 	gameStart();
+			// });
 
-			document.addEventListener("keyup", (e) => {
-				if (e.keyCode === 13) {
-					isFirstPlay = true;
-					gameStart();
-				}
-			});
+			// document.addEventListener("keyup", (e) => {
+			// 	if (e.keyCode === 13) {
+			// 		isFirstPlay = true;
+			// 		gameStart();
+			// 	}
+			// });
 			clearInterval(stopGameOver);
 		}
 	};

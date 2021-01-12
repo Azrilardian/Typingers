@@ -206,29 +206,14 @@ main .container {
 					background-color: lighten($color: $default-blue-color, $amount: 3);
 				}
 			}
+			span:first-child {
+				visibility: visible !important;
+				opacity: 1 !important;
+			}
 			span.visible {
 				visibility: visible;
 				opacity: 1;
 			}
-		}
-		button {
-			width: 100px;
-			padding: 8px 10px;
-			text-align: center;
-			height: auto;
-			border-radius: 10px;
-			margin-top: 10px;
-			background-color: $default-blue-color;
-			color: white;
-			outline: none;
-			border: none;
-			cursor: pointer;
-			visibility: hidden;
-			display: none;
-		}
-		button.visible {
-			visibility: visible;
-			display: unset;
 		}
 	}
 
