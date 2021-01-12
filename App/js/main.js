@@ -10,6 +10,8 @@ const typeingGame = () => {
 	const easyScore = document.getElementById("easy-score");
 	const medScore = document.getElementById("medium-score");
 	const hardScore = document.getElementById("hard-score");
+	const difficultyOptionContainer = document.querySelector(".difficulty-option");
+	const difficultyOption = difficultyOptionContainer.querySelectorAll("span");
 	let skor = 0;
 	let time = 0;
 	let stopCountDown;
@@ -50,7 +52,7 @@ const typeingGame = () => {
 			case "HARD":
 				time = difficultyLevel.hard.time;
 				words = randomWords({
-					exactly: 15,
+					exactly: 13,
 					join: " ",
 					maxLength: 10,
 				});
@@ -88,9 +90,6 @@ const typeingGame = () => {
 	};
 
 	const difficultySelect = () => {
-		const difficultyOptionContainer = document.querySelector(".difficulty-option");
-		const difficultyOption = difficultyOptionContainer.querySelectorAll("span");
-
 		const setHeightOptionContainer = (option) => {
 			const allOptionHaveVisibleClass = option.classList.contains("visible");
 			if (allOptionHaveVisibleClass) {
@@ -113,6 +112,7 @@ const typeingGame = () => {
 				difficultyOption[0].id = "recent";
 				if (option.id == "recent") return;
 				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
+				syncWithLocalStorage(recentDifficulty.innerText);
 				resetRecentGameDataWithScore();
 				setUserPreference();
 			});
@@ -238,8 +238,8 @@ const typeingGame = () => {
 	const syncWithLocalStorage = (difficulty = "EASY", easyHighScore = "0", medHighScore = "0", hardHighScore = "0") => {
 		todos.score = [easyHighScore, medHighScore, hardHighScore];
 		todos.difficulty = difficulty;
-		s;
 		localStorage.setItem(TYPEING_STORAGE, JSON.stringify(todos));
+		setUserPreference();
 		return;
 	};
 
@@ -251,6 +251,8 @@ const typeingGame = () => {
 		easyScore.innerText = easyHighScore;
 		medScore.innerText = medHighScore;
 		hardScore.innerText = hardHighScore;
+		if (recentDifficulty.innerText == "MEDIUM") difficultyOption[1].innerText = "EASY";
+		if (recentDifficulty.innerText == "HARD") difficultyOption[2].innerText = "EASY";
 		syncWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
 	}
 };
