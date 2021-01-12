@@ -255,20 +255,21 @@ main .container {
 				.board {
 					width: 280px;
 					margin-top: 10px;
-					height: 170px;
+					height: 180px;
 					background-color: $default-blue-color;
 					transform: rotate(2deg);
 					border-radius: 8px;
-					padding: 20px;
+					padding: 20px 25px;
 					box-shadow: -3px 3px 0px 2px #2e546d;
 					transition: 0.2s ease;
+					font-family: "Ranga", cursive;
 
 					&:hover {
 						transform: rotate(0);
 					}
 					h3 {
 						position: relative;
-						font-weight: 600;
+						font-size: 22px;
 						color: white;
 						margin-bottom: 15px;
 						text-align: center;
@@ -285,7 +286,9 @@ main .container {
 					}
 					p {
 						font-weight: 500;
+						font-size: 17px;
 						margin: 5px 0;
+						letter-spacing: 2px;
 					}
 					p:nth-child(2) {
 						color: $easy-difficulty;
