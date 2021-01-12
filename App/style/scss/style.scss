@@ -187,8 +187,9 @@ main .container {
 			transform: translateY(-10px);
 		}
 		.difficulty-option {
+			position: relative;
 			width: 100px;
-			text-align: center;
+			// text-align: center;
 			border-radius: 10px;
 			background-color: $default-blue-color;
 			color: white;
@@ -213,6 +214,17 @@ main .container {
 			span.visible {
 				visibility: visible;
 				opacity: 1;
+			}
+			span.arrow-icon {
+				position: absolute;
+				user-select: none;
+				top: 3px;
+				right: 0px;
+				visibility: unset;
+				opacity: unset;
+				&:hover {
+					background-color: unset;
+				}
 			}
 		}
 	}

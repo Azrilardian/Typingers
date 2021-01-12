@@ -11,7 +11,7 @@ const typeingGame = () => {
 	const medScore = document.getElementById("medium-score");
 	const hardScore = document.getElementById("hard-score");
 	const difficultyOptionContainer = document.querySelector(".difficulty-option");
-	const difficultyOption = difficultyOptionContainer.querySelectorAll("span");
+	const difficultyOption = difficultyOptionContainer.querySelectorAll(".opt-diff");
 	let skor = 0;
 	let time = 0;
 	let stopCountDown;
