@@ -76,7 +76,6 @@ const typeingGame = () => {
 		input.disabled = false;
 		input.focus();
 		timeDisplay.innerText = time;
-		btnTryAgain.classList.remove("visible");
 	};
 
 	const resetRecentGameDataWithScore = () => {
