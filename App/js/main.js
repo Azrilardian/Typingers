@@ -92,7 +92,8 @@ const typeingGame = () => {
 		const difficultyOption = difficultyOptionContainer.querySelectorAll("span");
 
 		const setHeightOptionContainer = (option) => {
-			if (option.classList.contains("visible")) {
+			const allOptionHaveVisibleClass = option.classList.contains("visible");
+			if (allOptionHaveVisibleClass) {
 				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight * 3}px`;
 			} else {
 				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
@@ -204,19 +205,19 @@ const typeingGame = () => {
 			case "EASY":
 				if (skor > Number(easyScore.innerText)) {
 					easyScore.innerText = skor;
-					// syncWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
+					syncWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
 				}
 				break;
 			case "MEDIUM":
 				if (skor > Number(medScore.innerText)) {
 					medScore.innerText = skor;
-					// syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
+					syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
 				}
 				break;
 			case "HARD":
 				if (skor > Number(hardScore.innerText)) {
 					hardScore.innerText = skor;
-					// syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
+					syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
 				}
 				break;
 		}
@@ -231,26 +232,27 @@ const typeingGame = () => {
 	};
 	darkModeFeatures();
 
-	// const TYPEING_STORAGE = "TYPEING STORAGE";
-	// let todos = {};
+	const TYPEING_STORAGE = "TYPEING STORAGE";
+	let todos = {};
 
-	// const syncWithLocalStorage = (difficulty = "EASY", easyHighScore = "0", medHighScore = "0", hardHighScore = "0") => {
-	// 	todos.score = [easyHighScore, medHighScore, hardHighScore];
-	// 	todos.difficulty = difficulty;s
-	// 	localStorage.setItem(TYPEING_STORAGE, JSON.stringify(todos));
-	// 	return;
-	// };
+	const syncWithLocalStorage = (difficulty = "EASY", easyHighScore = "0", medHighScore = "0", hardHighScore = "0") => {
+		todos.score = [easyHighScore, medHighScore, hardHighScore];
+		todos.difficulty = difficulty;
+		s;
+		localStorage.setItem(TYPEING_STORAGE, JSON.stringify(todos));
+		return;
+	};
 
-	// const dataFromLocal = localStorage.getItem(TYPEING_STORAGE);
-	// if (dataFromLocal) {
-	// 	const data = JSON.parse(dataFromLocal);
-	// 	recentDifficulty.innerText = data.difficulty;
-	// 	const [easyHighScore, medHighScore, hardHighScore] = data.score;
-	// 	easyScore.innerText = easyHighScore;
-	// 	medScore.innerText = medHighScore;
-	// 	hardScore.innerText = hardHighScore;
-	// 	syncWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
-	// }
+	const dataFromLocal = localStorage.getItem(TYPEING_STORAGE);
+	if (dataFromLocal) {
+		const data = JSON.parse(dataFromLocal);
+		recentDifficulty.innerText = data.difficulty;
+		const [easyHighScore, medHighScore, hardHighScore] = data.score;
+		easyScore.innerText = easyHighScore;
+		medScore.innerText = medHighScore;
+		hardScore.innerText = hardHighScore;
+		syncWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
+	}
 };
 
 export default typeingGame;
