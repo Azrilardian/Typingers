@@ -1,7 +1,7 @@
 @import "./var";
 
 body.darkmode {
-	background-color: #162e41;
+	background-image: linear-gradient(#162e41f1, #162e41f1), url(../../img/bg.png) !important;
 }
 
 body.darkmode .game {
@@ -43,6 +43,9 @@ body.darkmode {
 				}
 				p {
 					color: white !important;
+				}
+				p:nth-child(2) {
+					color: $hard-difficulty !important;
 				}
 			}
 		}

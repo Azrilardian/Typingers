@@ -8,9 +8,13 @@
 }
 
 html body {
+	// position: relative;
 	font-family: "Poppins", sans-serif;
 	user-select: none;
-	transition: 0.3s ease-in;
+	transition: 0.2s ease-in-out;
+	background-image: linear-gradient(#ffffffd3, #ffffffd3), url(../../img/bg.png);
+	background-position: center;
+	background-size: cover;
 }
 
 .container {
@@ -25,7 +29,7 @@ body > header {
 		justify-content: space-between;
 		align-items: center;
 		h2 {
-			font-size: 23px;
+			font-size: 20px;
 			color: $default-blue-color;
 		}
 		.set-theme {
@@ -94,13 +98,13 @@ main .container {
 			background-color: #f9f9f9;
 			box-shadow: 3px 3px 10px #63636331;
 			border-radius: 10px;
-			transition: 0.3s ease-in;
+			transition: 0.2s ease-in-out;
 			p {
 				margin-top: 30px;
 				padding: 10px 20px;
 				font-size: 15px;
 				color: #4e4e4e;
-				transition: 0.3s ease-in;
+				transition: 0.2s ease-in-out;
 				span {
 					display: inline-block;
 					padding: 3px;
@@ -134,7 +138,7 @@ main .container {
 					outline: none;
 					border: none;
 					font-family: "Poppins", sans-serif;
-					transition: 0.3s ease-in;
+					transition: 0.2s ease-in-out;
 
 					&.match {
 						background-color: $easy-difficulty;
@@ -259,6 +263,7 @@ main .container {
 					width: 35px;
 					height: 2px;
 					background-color: #222222;
+					transition: 0.2s ease-in-out;
 					transform: translate(7px, 23px) rotate(50deg);
 				}
 				span#pin::after {
@@ -329,7 +334,7 @@ main .container {
 				border: 1px solid #e7e7e7;
 				width: 280px;
 				padding: 20px 0;
-				transition: 0.3s ease-in;
+				transition: 0.2s ease-in-out;
 				hr {
 					margin-bottom: 25px;
 					border-color: #07679f48;
@@ -340,7 +345,7 @@ main .container {
 					color: $default-blue-color;
 					margin-bottom: 40px;
 					text-align: center;
-					transition: 0.3s ease-in;
+					transition: 0.2s ease-in-out;
 				}
 				h3::before {
 					content: "";
@@ -362,7 +367,7 @@ main .container {
 						width: 90%;
 						line-height: 27px;
 						color: #585858;
-						transition: 0.3s ease-in;
+						transition: 0.2s ease-in-out;
 					}
 					p:nth-child(2) {
 						margin-top: 25px;
@@ -406,6 +411,105 @@ footer {
 	font-size: 13px;
 	padding: 8px 0;
 	margin-top: 50px;
+}
+
+.statistic.show {
+	content-visibility: auto;
+	opacity: 1;
+}
+
+.statistic {
+	z-index: 999;
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 500px;
+	background-color: white;
+	filter: drop-shadow(0 20px 30px #0000003f);
+	padding: 30px 50px;
+	border-radius: 10px;
+	transition: transform 0.3s ease-in-out;
+	transition: opacity 0.3s ease-in-out;
+	opacity: 0;
+	header {
+		display: grid;
+		place-content: center;
+		h2 {
+			font-size: 20px;
+			display: inline-block;
+			position: relative;
+			color: $default-blue-color;
+			z-index: 1;
+		}
+		h2::before {
+			content: "";
+			position: absolute;
+			top: 2px;
+			right: -7px;
+			width: 90%;
+			height: 80%;
+			background-color: $default-yellow-color;
+			z-index: -1;
+		}
+	}
+	h3 {
+		color: $default-blue-color;
+		transform: translateY(20px);
+	}
+	main {
+		margin: 15px 0;
+		p {
+			font-weight: 500;
+		}
+		section:first-child {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			line-height: 36px;
+			.left {
+				width: 110px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			.right {
+				margin-left: 25px;
+			}
+		}
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		img {
+			width: 200px;
+			height: auto;
+		}
+	}
+	footer {
+		margin: 20px 0 0 0;
+		padding: 0;
+		background-color: unset;
+		img {
+			width: 30px;
+			height: auto;
+			cursor: pointer;
+		}
+	}
+}
+
+.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transition: 0.3s ease-in-out;
+	user-select: none;
+	z-index: -1;
+}
+.overlay.active {
+	z-index: unset;
+	background-color: #020304d5;
 }
 
 @media screen and(max-width: 1300px) {
@@ -475,6 +579,30 @@ footer {
 }
 
 @media screen and(max-width: 576px) {
+	.statistic {
+		width: 400px;
+		padding: 20px 30px;
+		h3 {
+			transform: translateY(13px);
+		}
+		main {
+			p {
+				font-size: 14px;
+			}
+			section:first-child {
+				line-height: 30px;
+				.left {
+					width: 90px;
+				}
+				.right {
+					margin-left: 20px;
+				}
+			}
+			img {
+				width: 150px;
+			}
+		}
+	}
 	.container {
 		padding: 10px 20px;
 	}

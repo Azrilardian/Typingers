@@ -6,4 +6,21 @@ module.exports = {
 		path: path.resolve(__dirname, "Dist"),
 		filename: "bundle.js",
 	},
+	module: {
+		rules: [
+			{
+				test: /\.(svg|png|jpg|jpeg)$/,
+				use: {
+					loader: "file-loader",
+					options: {
+						publicPath: (resourcePath, context) => {
+							return path.relative(path.dirname(resourcePath), context) + "";
+						},
+						name: "[name].[ext]",
+						outputPath: "img",
+					},
+				},
+			},
+		],
+	},
 };

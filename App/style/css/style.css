@@ -57,6 +57,9 @@ html body {
           user-select: none;
   -webkit-transition: 0.3s ease-in;
   transition: 0.3s ease-in;
+  background-image: url("../../img/bg.png");
+  background-position: center;
+  background-size: cover;
 }
 
 .container {
@@ -304,8 +307,8 @@ main .container .game main::before {
 }
 
 main .container .game .difficulty-option {
+  position: relative;
   width: 100px;
-  text-align: center;
   border-radius: 10px;
   background-color: #07689f;
   color: white;
@@ -333,30 +336,30 @@ main .container .game .difficulty-option span:hover {
   background-color: #0872ae;
 }
 
+main .container .game .difficulty-option span:first-child {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 main .container .game .difficulty-option span.visible {
   visibility: visible;
   opacity: 1;
 }
 
-main .container .game button {
-  width: 100px;
-  padding: 8px 10px;
-  text-align: center;
-  height: auto;
-  border-radius: 10px;
-  margin-top: 10px;
-  background-color: #07689f;
-  color: white;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  visibility: hidden;
-  display: none;
+main .container .game .difficulty-option span.arrow-icon {
+  position: absolute;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  top: 3px;
+  right: 0px;
+  visibility: unset;
+  opacity: unset;
 }
 
-main .container .game button.visible {
-  visibility: visible;
-  display: unset;
+main .container .game .difficulty-option span.arrow-icon:hover {
+  background-color: unset;
 }
 
 main .container aside {
@@ -422,16 +425,17 @@ main .container aside.score-board main span#pin::after {
 main .container aside.score-board main .board {
   width: 280px;
   margin-top: 10px;
-  height: 170px;
+  height: 180px;
   background-color: #07689f;
   -webkit-transform: rotate(2deg);
           transform: rotate(2deg);
   border-radius: 8px;
-  padding: 20px;
+  padding: 20px 25px;
   -webkit-box-shadow: -3px 3px 0px 2px #2e546d;
           box-shadow: -3px 3px 0px 2px #2e546d;
   -webkit-transition: 0.2s ease;
   transition: 0.2s ease;
+  font-family: "Ranga", cursive;
 }
 
 main .container aside.score-board main .board:hover {
@@ -441,7 +445,7 @@ main .container aside.score-board main .board:hover {
 
 main .container aside.score-board main .board h3 {
   position: relative;
-  font-weight: 600;
+  font-size: 22px;
   color: white;
   margin-bottom: 15px;
   text-align: center;
@@ -461,7 +465,9 @@ main .container aside.score-board main .board h3::before {
 
 main .container aside.score-board main .board p {
   font-weight: 500;
+  font-size: 17px;
   margin: 5px 0;
+  letter-spacing: 2px;
 }
 
 main .container aside.score-board main .board p:nth-child(2) {

@@ -12,6 +12,8 @@ const typeingGame = () => {
 	const hardScore = document.getElementById("hard-score");
 	const difficultyOptionContainer = document.querySelector(".difficulty-option");
 	const difficultyOption = difficultyOptionContainer.querySelectorAll(".opt-diff");
+	const section = document.querySelector(".statistic");
+	const overlay = document.querySelector(".overlay");
 	let skor = 0;
 	let time = 0;
 	let stopCountDown;
@@ -127,7 +129,6 @@ const typeingGame = () => {
 			matchText();
 			if (isFirstPlay && input.value.length > 0) {
 				stopCountDown = setInterval(countDown, 1000);
-				stopGameOver = setInterval(gameOver, 50);
 				isFirstPlay = false;
 			}
 		});
@@ -173,32 +174,11 @@ const typeingGame = () => {
 	function countDown() {
 		if (time > 0) time--;
 		else if (time === 0) {
-			time = "00";
-			clearInterval(stopCountDown);
+			showTimesUpSection();
 			checkHighScore();
 		}
 		timeDisplay.innerText = time;
 	}
-
-	const gameOver = () => {
-		if (time === 0) {
-			input.disabled = true;
-			btnTryAgain.classList.add("visible");
-
-			// btnTryAgain.addEventListener("click", () => {
-			// 	isFirstPlay = true;
-			// 	gameStart();
-			// });
-
-			// document.addEventListener("keyup", (e) => {
-			// 	if (e.keyCode === 13) {
-			// 		isFirstPlay = true;
-			// 		gameStart();
-			// 	}
-			// });
-			clearInterval(stopGameOver);
-		}
-	};
 
 	const checkHighScore = () => {
 		switch (recentDifficulty.innerText) {
@@ -221,6 +201,37 @@ const typeingGame = () => {
 				}
 				break;
 		}
+	};
+
+	const showTimesUpSection = () => {
+		const totalScoreDisplay = document.getElementById("total-score");
+		const totalTimeDisplay = document.getElementById("total-time");
+		const wpmScore = document.getElementById("wpm-score");
+		const reload = document.getElementById("reload-icon");
+
+		input.disabled = true;
+		overlay.classList.add("active");
+		section.classList.add("show");
+		clearInterval(stopCountDown);
+
+		reload.addEventListener("click", () => {
+			hideTimesUpSection();
+			gameStart();
+			isFirstPlay = true;
+		});
+
+		document.addEventListener("keyup", (e) => {
+			if (e.keyCode === 13) {
+				hideTimesUpSection();
+				gameStart();
+				isFirstPlay = true;
+			}
+		});
+	};
+
+	const hideTimesUpSection = () => {
+		overlay.classList.remove("active");
+		section.classList.remove("show");
 	};
 
 	const darkModeFeatures = () => {
