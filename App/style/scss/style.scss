@@ -193,7 +193,6 @@ main .container {
 		.difficulty-option {
 			position: relative;
 			width: 100px;
-			// text-align: center;
 			border-radius: 10px;
 			background-color: $default-blue-color;
 			color: white;
@@ -416,10 +415,11 @@ footer {
 .statistic.show {
 	content-visibility: auto;
 	opacity: 1;
+	z-index: 999;
 }
 
 .statistic {
-	z-index: 999;
+	z-index: -1;
 	position: absolute;
 	top: 45%;
 	left: 50%;
@@ -573,6 +573,13 @@ footer {
 			}
 			&.instructions {
 				margin: 60px 0;
+				main {
+					.text {
+						P:nth-child(3) {
+							margin-top: 3px;
+						}
+					}
+				}
 			}
 		}
 	}

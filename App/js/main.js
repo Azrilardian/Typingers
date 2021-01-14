@@ -1,6 +1,5 @@
 const typeingGame = () => {
 	const randomWords = require("random-words");
-
 	const skorDisplay = document.querySelector("#score span");
 	const timeDisplay = document.getElementById("time");
 	const input = document.querySelector("input");
@@ -16,8 +15,8 @@ const typeingGame = () => {
 	const overlay = document.querySelector(".overlay");
 	let skor = 0;
 	let time = 0;
+	let totalTime = 0;
 	let stopCountDown;
-	let stopGameOver;
 	let isFirstPlay = true;
 
 	const difficultyLevel = {
@@ -71,7 +70,6 @@ const typeingGame = () => {
 		};
 
 		timeDisplay.innerText = time;
-
 		spanEveryWord();
 	}
 
@@ -83,10 +81,7 @@ const typeingGame = () => {
 	};
 
 	const resetRecentGameDataWithScore = () => {
-		input.value = null;
-		input.disabled = false;
-		input.focus();
-		timeDisplay.innerText = time;
+		resetRecentGameData();
 		skor = 0;
 		skorDisplay.innerText = skor;
 	};
@@ -116,7 +111,6 @@ const typeingGame = () => {
 				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
 				syncWithLocalStorage(recentDifficulty.innerText);
 				resetRecentGameDataWithScore();
-				setUserPreference();
 			});
 		});
 	};
@@ -125,6 +119,7 @@ const typeingGame = () => {
 	function gameStart() {
 		resetRecentGameDataWithScore();
 		setUserPreference();
+		totalTime = time;
 		input.addEventListener("input", () => {
 			matchText();
 			if (isFirstPlay && input.value.length > 0) {
@@ -165,6 +160,7 @@ const typeingGame = () => {
 		});
 
 		if (isCorrect && !!!errorCount) {
+			totalTime += time;
 			resetRecentGameData();
 			setUserPreference();
 			skorDisplay.innerText = ++skor;
@@ -176,6 +172,7 @@ const typeingGame = () => {
 		else if (time === 0) {
 			showTimesUpSection();
 			checkHighScore();
+			tryAgain();
 		}
 		timeDisplay.innerText = time;
 	}
@@ -207,13 +204,38 @@ const typeingGame = () => {
 		const totalScoreDisplay = document.getElementById("total-score");
 		const totalTimeDisplay = document.getElementById("total-time");
 		const wpmScore = document.getElementById("wpm-score");
-		const reload = document.getElementById("reload-icon");
+
+		const randomNumbersAnimation = (target) => {
+			const randomNumbers = setInterval(() => {
+				target.innerText = Math.floor(Math.random() * 10);
+			}, 10);
+
+			setTimeout(() => {
+				clearInterval(randomNumbers);
+				showingResult();
+			}, 1500);
+		};
+
+		const showingResult = () => {
+			totalScoreDisplay.innerText = skor;
+			totalTimeDisplay.innerText = totalTime;
+		};
 
 		input.disabled = true;
 		overlay.classList.add("active");
 		section.classList.add("show");
+		randomNumbersAnimation(totalScoreDisplay);
+		randomNumbersAnimation(totalTimeDisplay);
 		clearInterval(stopCountDown);
+	};
 
+	const hideTimesUpSection = () => {
+		overlay.classList.remove("active");
+		section.classList.remove("show");
+	};
+
+	const tryAgain = () => {
+		const reload = document.getElementById("reload-icon");
 		reload.addEventListener("click", () => {
 			hideTimesUpSection();
 			gameStart();
@@ -227,11 +249,6 @@ const typeingGame = () => {
 				isFirstPlay = true;
 			}
 		});
-	};
-
-	const hideTimesUpSection = () => {
-		overlay.classList.remove("active");
-		section.classList.remove("show");
 	};
 
 	const darkModeFeatures = () => {
