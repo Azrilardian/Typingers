@@ -8,7 +8,6 @@
 }
 
 html body {
-	// position: relative;
 	font-family: "Poppins", sans-serif;
 	user-select: none;
 	transition: 0.2s ease-in-out;
@@ -465,13 +464,11 @@ footer {
 		section:first-child {
 			display: flex;
 			justify-content: space-between;
-			align-items: center;
 			line-height: 36px;
 			.left {
 				width: 110px;
 				display: flex;
 				justify-content: space-between;
-				align-items: center;
 			}
 			.right {
 				margin-left: 25px;
@@ -481,7 +478,7 @@ footer {
 		align-items: center;
 		justify-content: space-between;
 		img {
-			width: 200px;
+			width: 180px;
 			height: auto;
 		}
 	}
@@ -612,5 +609,38 @@ footer {
 	}
 	.container {
 		padding: 10px 20px;
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.statistic {
+		width: 330px;
+		padding: 15px 25px;
+		header {
+			h2 {
+				font-size: 18px;
+			}
+		}
+		h3 {
+			font-size: 17px;
+		}
+		main {
+			margin: 13px 0;
+
+			section:first-child {
+				line-height: 28px;
+				.left {
+					width: 110px;
+				}
+			}
+			img {
+				width: 100px;
+			}
+		}
+		footer {
+			img {
+				width: 25px;
+			}
+		}
 	}
 }

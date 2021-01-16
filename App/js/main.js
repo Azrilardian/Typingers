@@ -13,11 +13,14 @@ const typeingGame = () => {
 	const difficultyOption = difficultyOptionContainer.querySelectorAll(".opt-diff");
 	const section = document.querySelector(".statistic");
 	const overlay = document.querySelector(".overlay");
+	const toggle = document.querySelector(".set-theme .darkmode-toggle");
 	let skor = 0;
 	let time = 0;
 	let totalTime = 0;
 	let stopCountDown;
+	let totalTyped = 0;
 	let isFirstPlay = true;
+	let errorTypedCount = 0;
 
 	const difficultyLevel = {
 		easy: {
@@ -53,7 +56,7 @@ const typeingGame = () => {
 			case "HARD":
 				time = difficultyLevel.hard.time;
 				words = randomWords({
-					exactly: 13,
+					exactly: 12,
 					join: " ",
 					maxLength: 10,
 				});
@@ -70,20 +73,23 @@ const typeingGame = () => {
 		};
 
 		timeDisplay.innerText = time;
+		totalTime = time;
 		spanEveryWord();
 	}
 
-	const resetRecentGameData = () => {
+	const resetRecentGameDataWithoutScore = () => {
 		input.value = null;
 		input.disabled = false;
 		input.focus();
 		timeDisplay.innerText = time;
 	};
 
-	const resetRecentGameDataWithScore = () => {
-		resetRecentGameData();
+	const totallyResetRecentGame = () => {
+		resetRecentGameDataWithoutScore();
 		skor = 0;
 		skorDisplay.innerText = skor;
+		errorTypedCount = 0;
+		totalTyped = 0;
 	};
 
 	const difficultySelect = () => {
@@ -109,17 +115,16 @@ const typeingGame = () => {
 				difficultyOption[0].id = "recent";
 				if (option.id == "recent") return;
 				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
-				syncWithLocalStorage(recentDifficulty.innerText);
-				resetRecentGameDataWithScore();
+				syncDataWithLocalStorage(recentDifficulty.innerText);
+				totallyResetRecentGame();
 			});
 		});
 	};
 	difficultySelect();
 
 	function gameStart() {
-		resetRecentGameDataWithScore();
+		totallyResetRecentGame();
 		setUserPreference();
-		totalTime = time;
 		input.addEventListener("input", () => {
 			matchText();
 			if (isFirstPlay && input.value.length > 0) {
@@ -127,14 +132,21 @@ const typeingGame = () => {
 				isFirstPlay = false;
 			}
 		});
+		console.log(recentDifficulty.innerText);
 	}
 	gameStart();
+
+	const checkTotalErrorWord = () => {
+		const arrayWords = randomWordsDisplay.querySelectorAll("span");
+		arrayWords.forEach((word) => {
+			if (word.classList.contains("incorrect")) ++errorTypedCount;
+		});
+	};
 
 	const matchText = () => {
 		const arrayWords = randomWordsDisplay.querySelectorAll("span");
 		const arrayValue = input.value.split("");
-		let errorCount = 0;
-		let isCorrect = false;
+		let isAallWordTyped = false;
 
 		arrayWords.forEach((char, index) => {
 			let character = arrayValue[index];
@@ -144,24 +156,27 @@ const typeingGame = () => {
 			if (chartacterBelumDiKlik) {
 				char.classList.remove("incorrect");
 				char.classList.remove("correct");
-				isCorrect = false;
+				isAallWordTyped = false;
 			} else if (characterSame) {
 				char.classList.add("correct");
 				char.classList.remove("incorrect");
 				infoDisplay.classList.add("correct");
-				isCorrect = true;
+				isAallWordTyped = true;
 			} else {
 				char.classList.remove("correct");
 				char.classList.add("incorrect");
 				infoDisplay.classList.remove("correct");
-				isCorrect = false;
-				++errorCount;
+				isAallWordTyped = false;
 			}
 		});
 
-		if (isCorrect && !!!errorCount) {
+		++totalTyped;
+
+		if (isAallWordTyped) {
 			totalTime += time;
-			resetRecentGameData();
+			totalTyped += input.value.length;
+			checkTotalErrorWord();
+			resetRecentGameDataWithoutScore();
 			setUserPreference();
 			skorDisplay.innerText = ++skor;
 		}
@@ -170,31 +185,41 @@ const typeingGame = () => {
 	function countDown() {
 		if (time > 0) time--;
 		else if (time === 0) {
+			clearInterval(stopCountDown);
+			totalTyped += input.value.length;
+			checkTotalErrorWord();
 			showTimesUpSection();
 			checkHighScore();
-			tryAgain();
+			cekUserTryAgain();
 		}
+
 		timeDisplay.innerText = time;
 	}
 
 	const checkHighScore = () => {
+		const recentEasyHighScore = +easyScore.innerText;
+		const recentMediumHighScore = +medScore.innerText;
+		const recentHardHighScore = +hardScore.innerText;
+
+		const newHighScore = (whatScore) => (whatScore.innerText = skor);
+
 		switch (recentDifficulty.innerText) {
 			case "EASY":
-				if (skor > Number(easyScore.innerText)) {
-					easyScore.innerText = skor;
-					syncWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
+				if (skor > recentEasyHighScore) {
+					newHighScore(easyScore);
+					syncDataWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
 				}
 				break;
 			case "MEDIUM":
-				if (skor > Number(medScore.innerText)) {
-					medScore.innerText = skor;
-					syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
+				if (skor > recentMediumHighScore) {
+					newHighScore(medScore);
+					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
 				}
 				break;
 			case "HARD":
-				if (skor > Number(hardScore.innerText)) {
-					hardScore.innerText = skor;
-					syncWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
+				if (skor > recentHardHighScore) {
+					newHighScore(hardScore);
+					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
 				}
 				break;
 		}
@@ -203,30 +228,43 @@ const typeingGame = () => {
 	const showTimesUpSection = () => {
 		const totalScoreDisplay = document.getElementById("total-score");
 		const totalTimeDisplay = document.getElementById("total-time");
+		const totalError = document.getElementById("total-error");
 		const wpmScore = document.getElementById("wpm-score");
+		const minutes = Math.floor(totalTime / 60);
+		const seconds = totalTime % 60;
 
-		const randomNumbersAnimation = (target) => {
+		const giveRandomNumbersAnimation = (target) => {
 			const randomNumbers = setInterval(() => {
-				target.innerText = Math.floor(Math.random() * 10);
+				target.map((e) => (e.innerText = Math.floor(Math.random() * 10)));
 			}, 10);
 
-			setTimeout(() => {
-				clearInterval(randomNumbers);
-				showingResult();
-			}, 1500);
+			setTimeout(() => clearInterval(randomNumbers), 1500);
 		};
 
 		const showingResult = () => {
-			totalScoreDisplay.innerText = skor;
-			totalTimeDisplay.innerText = totalTime;
+			setTimeout(() => {
+				totalScoreDisplay.innerText = skor;
+				totalTimeDisplay.innerText = calculateTotalTime();
+				totalError.innerText = errorTypedCount;
+				wpmScore.innerText = calculateWPM();
+			}, 1500);
+		};
+
+		const calculateTotalTime = () => {
+			if (totalTime < 60) return `00 M ${totalTime} S`;
+			return `${minutes} M : ${seconds} S`;
+		};
+
+		const calculateWPM = () => {
+			const grosWPM = totalTyped / 5;
+			return parseInt((grosWPM - errorTypedCount) / minutes);
 		};
 
 		input.disabled = true;
 		overlay.classList.add("active");
 		section.classList.add("show");
-		randomNumbersAnimation(totalScoreDisplay);
-		randomNumbersAnimation(totalTimeDisplay);
-		clearInterval(stopCountDown);
+		giveRandomNumbersAnimation([totalScoreDisplay, totalTimeDisplay, totalError, wpmScore]);
+		showingResult();
 	};
 
 	const hideTimesUpSection = () => {
@@ -234,8 +272,9 @@ const typeingGame = () => {
 		section.classList.remove("show");
 	};
 
-	const tryAgain = () => {
+	const cekUserTryAgain = () => {
 		const reload = document.getElementById("reload-icon");
+
 		reload.addEventListener("click", () => {
 			hideTimesUpSection();
 			gameStart();
@@ -252,36 +291,52 @@ const typeingGame = () => {
 	};
 
 	const darkModeFeatures = () => {
-		const toggle = document.querySelector(".set-theme .darkmode-toggle");
 		toggle.addEventListener("click", function () {
 			this.classList.toggle("dark-mode-active");
 			document.body.classList.toggle("darkmode");
+			syncThemeWithLocalStorage(document.body.classList.contains("darkmode"));
 		});
 	};
 	darkModeFeatures();
 
-	const TYPEING_STORAGE = "TYPEING STORAGE";
-	let todos = {};
+	const TYPEING_DATA = "TYPEING DATA";
+	const TYPEING_THEME = "TYPEING THEME";
+	let typeing = {};
+	let theme = {};
 
-	const syncWithLocalStorage = (difficulty = "EASY", easyHighScore = "0", medHighScore = "0", hardHighScore = "0") => {
-		todos.score = [easyHighScore, medHighScore, hardHighScore];
-		todos.difficulty = difficulty;
-		localStorage.setItem(TYPEING_STORAGE, JSON.stringify(todos));
+	const syncDataWithLocalStorage = (difficulty = "EASY", easyHighScore = "0", medHighScore = "0", hardHighScore = "0") => {
+		typeing.score = [easyHighScore, medHighScore, hardHighScore];
+		typeing.difficulty = difficulty;
+		localStorage.setItem(TYPEING_DATA, JSON.stringify(typeing));
 		setUserPreference();
-		return;
 	};
 
-	const dataFromLocal = localStorage.getItem(TYPEING_STORAGE);
-	if (dataFromLocal) {
-		const data = JSON.parse(dataFromLocal);
+	const syncThemeWithLocalStorage = (darkmode = false) => {
+		theme.darkMode = darkmode;
+		localStorage.setItem(TYPEING_THEME, JSON.stringify(theme));
+	};
+
+	const dataFromTypeing = localStorage.getItem(TYPEING_DATA);
+	if (dataFromTypeing) {
+		const data = JSON.parse(dataFromTypeing);
 		recentDifficulty.innerText = data.difficulty;
+		console.log(recentDifficulty.innerText);
 		const [easyHighScore, medHighScore, hardHighScore] = data.score;
 		easyScore.innerText = easyHighScore;
 		medScore.innerText = medHighScore;
 		hardScore.innerText = hardHighScore;
 		if (recentDifficulty.innerText == "MEDIUM") difficultyOption[1].innerText = "EASY";
 		if (recentDifficulty.innerText == "HARD") difficultyOption[2].innerText = "EASY";
-		syncWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
+		syncDataWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
+	}
+
+	const dataFromTheme = localStorage.getItem(TYPEING_THEME);
+	if (dataFromTheme) {
+		const data = JSON.parse(dataFromTheme);
+		if (data.darkMode) {
+			toggle.classList.add("dark-mode-active");
+			document.body.classList.add("darkmode");
+		}
 	}
 };
 
