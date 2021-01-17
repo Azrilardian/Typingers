@@ -16,6 +16,7 @@ const typeingGame = () => {
 	const toggle = document.querySelector(".set-theme .darkmode-toggle");
 	let skor = 0;
 	let time = 0;
+	let difficultyTime = 0;
 	let totalTime = 0;
 	let stopCountDown;
 	let totalTyped = 0;
@@ -34,19 +35,72 @@ const typeingGame = () => {
 		},
 	};
 
+	/*
+	======================================================================================================
+	==========       STATEMENT - STATEMENT YANG BERHUBUNGAN DENGAN LOCAL STORAGE       =================== 
+	======================================================================================================
+	*/
+
+	const TYPEING_DATA = "TYPEING DATA";
+	const TYPEING_THEME = "TYPEING THEME";
+	let typeing = {};
+	let theme = {};
+
+	const syncDataWithLocalStorage = (difficulty = "EASY", easyHighScore = "0", medHighScore = "0", hardHighScore = "0") => {
+		typeing.score = [easyHighScore, medHighScore, hardHighScore];
+		typeing.difficulty = difficulty;
+		localStorage.setItem(TYPEING_DATA, JSON.stringify(typeing));
+		setUserPreference();
+	};
+
+	const syncThemeWithLocalStorage = (darkmode = false) => {
+		theme.darkMode = darkmode;
+		localStorage.setItem(TYPEING_THEME, JSON.stringify(theme));
+	};
+
+	const dataFromTypeing = localStorage.getItem(TYPEING_DATA);
+	if (dataFromTypeing) {
+		const data = JSON.parse(dataFromTypeing);
+		recentDifficulty.innerText = data.difficulty;
+		const [easyHighScore, medHighScore, hardHighScore] = data.score;
+		easyScore.innerText = easyHighScore;
+		medScore.innerText = medHighScore;
+		hardScore.innerText = hardHighScore;
+		if (recentDifficulty.innerText == "MEDIUM") difficultyOption[1].innerText = "EASY";
+		if (recentDifficulty.innerText == "HARD") difficultyOption[2].innerText = "EASY";
+		syncDataWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
+	}
+
+	const dataFromTheme = localStorage.getItem(TYPEING_THEME);
+	if (dataFromTheme) {
+		const data = JSON.parse(dataFromTheme);
+		if (data.darkMode) {
+			toggle.classList.add("dark-mode-active");
+			document.body.classList.add("darkmode");
+		}
+	}
+
+	/*
+	======================================================================================================
+	==========    AKHIR STATEMENT - STATEMENT YANG BERHUBUNGAN DENGAN LOCAL STORAGE    =================== 
+	======================================================================================================
+	*/
+
 	function setUserPreference() {
 		let words = "";
 		switch (recentDifficulty.innerText) {
 			case "EASY":
 				time = difficultyLevel.easy.time;
+				difficultyTime = difficultyLevel.easy.time;
 				words = randomWords({
-					exactly: 20,
+					exactly: 5,
 					join: " ",
 					maxLength: 5,
 				});
 				break;
 			case "MEDIUM":
 				time = difficultyLevel.medium.time;
+				difficultyTime = difficultyLevel.medium.time;
 				words = randomWords({
 					exactly: 20,
 					join: " ",
@@ -55,6 +109,7 @@ const typeingGame = () => {
 				break;
 			case "HARD":
 				time = difficultyLevel.hard.time;
+				difficultyTime = difficultyLevel.hard.time;
 				words = randomWords({
 					exactly: 12,
 					join: " ",
@@ -73,7 +128,6 @@ const typeingGame = () => {
 		};
 
 		timeDisplay.innerText = time;
-		totalTime = time;
 		spanEveryWord();
 	}
 
@@ -102,12 +156,11 @@ const typeingGame = () => {
 			}
 		};
 
-		setHeightOptionContainer(difficultyOption[1]);
+		setHeightOptionContainer(difficultyOption[2]);
 
 		difficultyOptionContainer.addEventListener("click", () => {
-			difficultyOption[0].id = "recent";
 			difficultyOption.forEach((e) => e.classList.toggle("visible"));
-			setHeightOptionContainer(difficultyOption[1]);
+			setHeightOptionContainer(difficultyOption[2]);
 		});
 
 		difficultyOption.forEach((option) => {
@@ -132,7 +185,6 @@ const typeingGame = () => {
 				isFirstPlay = false;
 			}
 		});
-		console.log(recentDifficulty.innerText);
 	}
 	gameStart();
 
@@ -173,7 +225,8 @@ const typeingGame = () => {
 		++totalTyped;
 
 		if (isAallWordTyped) {
-			totalTime += time;
+			totalTime += difficultyTime - time;
+			console.log(totalTime);
 			totalTyped += input.value.length;
 			checkTotalErrorWord();
 			resetRecentGameDataWithoutScore();
@@ -187,6 +240,7 @@ const typeingGame = () => {
 		else if (time === 0) {
 			clearInterval(stopCountDown);
 			totalTyped += input.value.length;
+			totalTime += difficultyTime;
 			checkTotalErrorWord();
 			showTimesUpSection();
 			checkHighScore();
@@ -197,27 +251,27 @@ const typeingGame = () => {
 	}
 
 	const checkHighScore = () => {
-		const recentEasyHighScore = +easyScore.innerText;
-		const recentMediumHighScore = +medScore.innerText;
-		const recentHardHighScore = +hardScore.innerText;
+		const easyHighScore = +easyScore.innerText;
+		const medHighScore = +medScore.innerText;
+		const hardHighScore = +hardScore.innerText;
 
 		const newHighScore = (whatScore) => (whatScore.innerText = skor);
 
 		switch (recentDifficulty.innerText) {
 			case "EASY":
-				if (skor > recentEasyHighScore) {
+				if (skor > easyHighScore) {
 					newHighScore(easyScore);
 					syncDataWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
 				}
 				break;
 			case "MEDIUM":
-				if (skor > recentMediumHighScore) {
+				if (skor > medHighScore) {
 					newHighScore(medScore);
 					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
 				}
 				break;
 			case "HARD":
-				if (skor > recentHardHighScore) {
+				if (skor > hardHighScore) {
 					newHighScore(hardScore);
 					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
 				}
@@ -298,46 +352,6 @@ const typeingGame = () => {
 		});
 	};
 	darkModeFeatures();
-
-	const TYPEING_DATA = "TYPEING DATA";
-	const TYPEING_THEME = "TYPEING THEME";
-	let typeing = {};
-	let theme = {};
-
-	const syncDataWithLocalStorage = (difficulty = "EASY", easyHighScore = "0", medHighScore = "0", hardHighScore = "0") => {
-		typeing.score = [easyHighScore, medHighScore, hardHighScore];
-		typeing.difficulty = difficulty;
-		localStorage.setItem(TYPEING_DATA, JSON.stringify(typeing));
-		setUserPreference();
-	};
-
-	const syncThemeWithLocalStorage = (darkmode = false) => {
-		theme.darkMode = darkmode;
-		localStorage.setItem(TYPEING_THEME, JSON.stringify(theme));
-	};
-
-	const dataFromTypeing = localStorage.getItem(TYPEING_DATA);
-	if (dataFromTypeing) {
-		const data = JSON.parse(dataFromTypeing);
-		recentDifficulty.innerText = data.difficulty;
-		console.log(recentDifficulty.innerText);
-		const [easyHighScore, medHighScore, hardHighScore] = data.score;
-		easyScore.innerText = easyHighScore;
-		medScore.innerText = medHighScore;
-		hardScore.innerText = hardHighScore;
-		if (recentDifficulty.innerText == "MEDIUM") difficultyOption[1].innerText = "EASY";
-		if (recentDifficulty.innerText == "HARD") difficultyOption[2].innerText = "EASY";
-		syncDataWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
-	}
-
-	const dataFromTheme = localStorage.getItem(TYPEING_THEME);
-	if (dataFromTheme) {
-		const data = JSON.parse(dataFromTheme);
-		if (data.darkMode) {
-			toggle.classList.add("dark-mode-active");
-			document.body.classList.add("darkmode");
-		}
-	}
 };
 
 export default typeingGame;
