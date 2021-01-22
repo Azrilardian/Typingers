@@ -138,13 +138,6 @@ main .container {
 					border: none;
 					font-family: "Poppins", sans-serif;
 					transition: 0.2s ease-in-out;
-
-					&.match {
-						background-color: $easy-difficulty;
-					}
-					&.not-match {
-						background-color: $hard-difficulty;
-					}
 				}
 				input::placeholder {
 					color: $default-blue-color;
@@ -162,7 +155,7 @@ main .container {
 					border-radius: 50%;
 				}
 				span.correct {
-					background-color: $easy-difficulty;
+					background-color: $easy-difficulty !important;
 					box-shadow: 0 0 3px $easy-difficulty;
 				}
 			}
@@ -614,7 +607,7 @@ footer {
 
 @media screen and (max-width: 450px) {
 	.statistic {
-		width: 330px;
+		width: 350px;
 		padding: 15px 25px;
 		header {
 			h2 {
