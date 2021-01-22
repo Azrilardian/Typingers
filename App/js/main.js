@@ -50,7 +50,6 @@ const typeingGame = () => {
 		typeing.score = [easyHighScore, medHighScore, hardHighScore];
 		typeing.difficulty = difficulty;
 		localStorage.setItem(TYPEING_DATA, JSON.stringify(typeing));
-		setUserPreference();
 	};
 
 	const syncThemeWithLocalStorage = (darkmode = false) => {
@@ -66,8 +65,11 @@ const typeingGame = () => {
 		easyScore.innerText = easyHighScore;
 		medScore.innerText = medHighScore;
 		hardScore.innerText = hardHighScore;
+
+		// Change manual difficulty so as not to double
 		if (recentDifficulty.innerText == "MEDIUM") difficultyOption[1].innerText = "EASY";
 		if (recentDifficulty.innerText == "HARD") difficultyOption[2].innerText = "EASY";
+
 		syncDataWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
 	}
 
@@ -93,7 +95,7 @@ const typeingGame = () => {
 				time = difficultyLevel.easy.time;
 				difficultyTime = difficultyLevel.easy.time;
 				words = randomWords({
-					exactly: 5,
+					exactly: 20,
 					join: " ",
 					maxLength: 5,
 				});
@@ -131,7 +133,7 @@ const typeingGame = () => {
 		spanEveryWord();
 	}
 
-	const resetRecentGameDataWithoutScore = () => {
+	const resetinputAndTime = () => {
 		input.value = null;
 		input.disabled = false;
 		input.focus();
@@ -139,10 +141,12 @@ const typeingGame = () => {
 	};
 
 	const totallyResetRecentGame = () => {
-		resetRecentGameDataWithoutScore();
+		resetinputAndTime();
 		skor = 0;
 		skorDisplay.innerText = skor;
 		errorTypedCount = 0;
+		difficultyTime = 0;
+		totalTime = 0;
 		totalTyped = 0;
 	};
 
@@ -168,8 +172,9 @@ const typeingGame = () => {
 				difficultyOption[0].id = "recent";
 				if (option.id == "recent") return;
 				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
-				syncDataWithLocalStorage(recentDifficulty.innerText);
+				setUserPreference();
 				totallyResetRecentGame();
+				syncDataWithLocalStorage(recentDifficulty.innerText);
 			});
 		});
 	};
@@ -202,10 +207,10 @@ const typeingGame = () => {
 
 		arrayWords.forEach((char, index) => {
 			let character = arrayValue[index];
-			const chartacterBelumDiKlik = character == null;
+			const characterUnclick = character == null;
 			const characterSame = character == char.textContent;
 
-			if (chartacterBelumDiKlik) {
+			if (characterUnclick) {
 				char.classList.remove("incorrect");
 				char.classList.remove("correct");
 				isAallWordTyped = false;
@@ -226,10 +231,9 @@ const typeingGame = () => {
 
 		if (isAallWordTyped) {
 			totalTime += difficultyTime - time;
-			console.log(totalTime);
 			totalTyped += input.value.length;
 			checkTotalErrorWord();
-			resetRecentGameDataWithoutScore();
+			resetinputAndTime();
 			setUserPreference();
 			skorDisplay.innerText = ++skor;
 		}
@@ -305,13 +309,14 @@ const typeingGame = () => {
 		};
 
 		const calculateTotalTime = () => {
-			if (totalTime < 60) return `00 M ${totalTime} S`;
-			return `${minutes} M : ${seconds} S`;
+			const secondInMinutes = 60;
+			return totalTime < secondInMinutes ? `00 M ${totalTime} S` : `${minutes} M : ${seconds} S`;
 		};
 
 		const calculateWPM = () => {
 			const grosWPM = totalTyped / 5;
-			return parseInt((grosWPM - errorTypedCount) / minutes);
+			const WPM = (grosWPM - errorTypedCount) / minutes;
+			return ++WPM;
 		};
 
 		input.disabled = true;
