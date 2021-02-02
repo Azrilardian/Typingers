@@ -2,8 +2,8 @@ const typeingGame = () => {
 	const randomWords = require("random-words");
 	const skorDisplay = document.querySelector("#score span");
 	const timeDisplay = document.getElementById("time");
-	const input = document.querySelector("input");
 	const infoDisplay = document.getElementById("review-info");
+	const input = document.querySelector("input");
 	const randomWordsDisplay = document.getElementById("random-text");
 	const recentDifficulty = document.getElementById("recent");
 	const easyScore = document.getElementById("easy-score");
@@ -11,7 +11,7 @@ const typeingGame = () => {
 	const hardScore = document.getElementById("hard-score");
 	const difficultyOptionContainer = document.querySelector(".difficulty-option");
 	const difficultyOption = difficultyOptionContainer.querySelectorAll(".opt-diff");
-	const section = document.querySelector(".statistic");
+	const statisticSection = document.querySelector(".statistic");
 	const overlay = document.querySelector(".overlay");
 	const toggle = document.querySelector(".set-theme .darkmode-toggle");
 	let skor = 0;
@@ -52,11 +52,6 @@ const typeingGame = () => {
 		localStorage.setItem(TYPEING_DATA, JSON.stringify(typeing));
 	};
 
-	const syncThemeWithLocalStorage = (darkmode = false) => {
-		theme.darkMode = darkmode;
-		localStorage.setItem(TYPEING_THEME, JSON.stringify(theme));
-	};
-
 	const dataFromTypeing = localStorage.getItem(TYPEING_DATA);
 	if (dataFromTypeing) {
 		const data = JSON.parse(dataFromTypeing);
@@ -81,6 +76,11 @@ const typeingGame = () => {
 			document.body.classList.add("darkmode");
 		}
 	}
+
+	const syncThemeWithLocalStorage = (darkmode = false) => {
+		theme.darkMode = darkmode;
+		localStorage.setItem(TYPEING_THEME, JSON.stringify(theme));
+	};
 
 	/*
 	======================================================================================================
@@ -288,7 +288,8 @@ const typeingGame = () => {
 		const totalTimeDisplay = document.getElementById("total-time");
 		const totalError = document.getElementById("total-error");
 		const wpmScore = document.getElementById("wpm-score");
-		const minutes = Math.floor(totalTime / 60);
+		const secondInMinutes = 60;
+		let minutes = Math.floor(totalTime / 60);
 		const seconds = totalTime % 60;
 
 		const giveRandomNumbersAnimation = (target) => {
@@ -309,32 +310,36 @@ const typeingGame = () => {
 		};
 
 		const calculateTotalTime = () => {
-			const secondInMinutes = 60;
 			return totalTime < secondInMinutes ? `00 M ${totalTime} S` : `${minutes} M : ${seconds} S`;
 		};
 
 		const calculateWPM = () => {
 			const grosWPM = totalTyped / 5;
+			if (totalTime < secondInMinutes) {
+				minutes = totalTime / 100;
+			} else {
+				minutes = `${minutes}.${seconds}`;
+			}
 			const WPM = (grosWPM - errorTypedCount) / minutes;
-			return ++WPM;
+			return parseInt(WPM);
 		};
 
 		input.disabled = true;
 		overlay.classList.add("active");
-		section.classList.add("show");
+		statisticSection.classList.add("show");
 		giveRandomNumbersAnimation([totalScoreDisplay, totalTimeDisplay, totalError, wpmScore]);
 		showingResult();
 	};
 
 	const hideTimesUpSection = () => {
 		overlay.classList.remove("active");
-		section.classList.remove("show");
+		statisticSection.classList.remove("show");
 	};
 
 	const cekUserTryAgain = () => {
-		const reload = document.getElementById("reload-icon");
+		const reloadBtn = document.getElementById("reload-icon");
 
-		reload.addEventListener("click", () => {
+		reloadBtn.addEventListener("click", () => {
 			hideTimesUpSection();
 			gameStart();
 			isFirstPlay = true;
