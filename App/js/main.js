@@ -20,6 +20,7 @@ const typeingGame = () => {
 	let totalTime = 0;
 	let stopCountDown;
 	let totalTyped = 0;
+	let totalBackspace = 0;
 	let isFirstPlay = true;
 	let errorTypedCount = 0;
 
@@ -130,6 +131,7 @@ const typeingGame = () => {
 		};
 
 		timeDisplay.innerText = time;
+		infoDisplay.classList.add("correct");
 		spanEveryWord();
 	}
 
@@ -172,8 +174,8 @@ const typeingGame = () => {
 				difficultyOption[0].id = "recent";
 				if (option.id == "recent") return;
 				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
-				setUserPreference();
 				totallyResetRecentGame();
+				setUserPreference();
 				syncDataWithLocalStorage(recentDifficulty.innerText);
 			});
 		});
@@ -200,7 +202,14 @@ const typeingGame = () => {
 		});
 	};
 
-	const matchText = () => {
+	const checkTotalTyped = () => {
+		const arrayWords = randomWordsDisplay.querySelectorAll("span");
+		arrayWords.forEach((word) => {
+			if (word.classList.contains("correct") || word.classList.contains("incorrect")) ++totalTyped;
+		});
+	};
+
+	function matchText() {
 		const arrayWords = randomWordsDisplay.querySelectorAll("span");
 		const arrayValue = input.value.split("");
 		let isAallWordTyped = false;
@@ -227,25 +236,23 @@ const typeingGame = () => {
 			}
 		});
 
-		++totalTyped;
-
 		if (isAallWordTyped) {
 			totalTime += difficultyTime - time;
-			totalTyped += input.value.length;
 			checkTotalErrorWord();
+			checkTotalTyped();
 			resetinputAndTime();
 			setUserPreference();
 			skorDisplay.innerText = ++skor;
 		}
-	};
+	}
 
 	function countDown() {
 		if (time > 0) time--;
 		else if (time === 0) {
 			clearInterval(stopCountDown);
-			totalTyped += input.value.length;
 			totalTime += difficultyTime;
 			checkTotalErrorWord();
+			checkTotalTyped();
 			showTimesUpSection();
 			checkHighScore();
 			cekUserTryAgain();
@@ -314,14 +321,10 @@ const typeingGame = () => {
 		};
 
 		const calculateWPM = () => {
-			const grosWPM = totalTyped / 5;
-			if (totalTime < secondInMinutes) {
-				minutes = totalTime / 100;
-			} else {
-				minutes = `${minutes}.${seconds}`;
-			}
-			const WPM = (grosWPM - errorTypedCount) / minutes;
-			return parseInt(WPM);
+			const correct = totalTyped - errorTypedCount;
+			const WPM = correct / 0.5;
+			console.log(`Total Time : ${totalTime}, Correct : ${correct}, Total Typed : ${totalTyped}`);
+			return WPM;
 		};
 
 		input.disabled = true;
