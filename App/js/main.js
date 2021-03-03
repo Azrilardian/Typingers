@@ -320,10 +320,14 @@ const typeingGame = () => {
 		};
 
 		const calculateWPM = () => {
-			const correct = totalTyped - errorTypedCount;
-			const WPM = correct / 0.5;
-			console.log(`Total Time : ${totalTime}, Correct : ${correct}, Total Typed : ${totalTyped}`);
-			return WPM;
+			const grossWPM = totalTyped / 5;
+			const grossWPMDivTotalError = grossWPM - errorTypedCount;
+			let WPM;
+			if (minutes === 0) WPM = grossWPMDivTotalError;
+			else {
+				WPM = grossWPMDivTotalError - minutes;
+			}
+			return parseInt(WPM);
 		};
 
 		input.disabled = true;
