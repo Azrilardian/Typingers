@@ -20,7 +20,6 @@ const typeingGame = () => {
 	let totalTime = 0;
 	let stopCountDown;
 	let totalTyped = 0;
-	let totalBackspace = 0;
 	let isFirstPlay = true;
 	let errorTypedCount = 0;
 
@@ -69,6 +68,11 @@ const typeingGame = () => {
 		syncDataWithLocalStorage(data.difficulty, easyHighScore, medHighScore, hardHighScore);
 	}
 
+	const syncThemeWithLocalStorage = (darkmode = false) => {
+		theme.darkMode = darkmode;
+		localStorage.setItem(TYPEING_THEME, JSON.stringify(theme));
+	};
+
 	const dataFromTheme = localStorage.getItem(TYPEING_THEME);
 	if (dataFromTheme) {
 		const data = JSON.parse(dataFromTheme);
@@ -77,11 +81,6 @@ const typeingGame = () => {
 			document.body.classList.add("darkmode");
 		}
 	}
-
-	const syncThemeWithLocalStorage = (darkmode = false) => {
-		theme.darkMode = darkmode;
-		localStorage.setItem(TYPEING_THEME, JSON.stringify(theme));
-	};
 
 	/*
 	======================================================================================================
@@ -196,41 +195,41 @@ const typeingGame = () => {
 	gameStart();
 
 	const checkTotalErrorWord = () => {
-		const arrayWords = randomWordsDisplay.querySelectorAll("span");
-		arrayWords.forEach((word) => {
+		const words = randomWordsDisplay.querySelectorAll("span");
+		words.forEach((word) => {
 			if (word.classList.contains("incorrect")) ++errorTypedCount;
 		});
 	};
 
 	const checkTotalTyped = () => {
-		const arrayWords = randomWordsDisplay.querySelectorAll("span");
-		arrayWords.forEach((word) => {
+		const words = randomWordsDisplay.querySelectorAll("span");
+		words.forEach((word) => {
 			if (word.classList.contains("correct") || word.classList.contains("incorrect")) ++totalTyped;
 		});
 	};
 
 	function matchText() {
-		const arrayWords = randomWordsDisplay.querySelectorAll("span");
-		const arrayValue = input.value.split("");
+		const words = randomWordsDisplay.querySelectorAll("span");
+		const value = input.value.split("");
 		let isAallWordTyped = false;
 
-		arrayWords.forEach((char, index) => {
-			let character = arrayValue[index];
+		words.forEach((word, index) => {
+			let character = value[index];
 			const characterUnclick = character == null;
-			const characterSame = character == char.textContent;
+			const characterSame = character == word.textContent;
 
 			if (characterUnclick) {
-				char.classList.remove("incorrect");
-				char.classList.remove("correct");
+				word.classList.remove("incorrect");
+				word.classList.remove("correct");
 				isAallWordTyped = false;
 			} else if (characterSame) {
-				char.classList.add("correct");
-				char.classList.remove("incorrect");
+				word.classList.add("correct");
+				word.classList.remove("incorrect");
 				infoDisplay.classList.add("correct");
 				isAallWordTyped = true;
 			} else {
-				char.classList.remove("correct");
-				char.classList.add("incorrect");
+				word.classList.remove("correct");
+				word.classList.add("incorrect");
 				infoDisplay.classList.remove("correct");
 				isAallWordTyped = false;
 			}
@@ -255,7 +254,7 @@ const typeingGame = () => {
 			checkTotalTyped();
 			showTimesUpSection();
 			checkHighScore();
-			cekUserTryAgain();
+			isTryAgain();
 		}
 
 		timeDisplay.innerText = time;
@@ -339,7 +338,7 @@ const typeingGame = () => {
 		statisticSection.classList.remove("show");
 	};
 
-	const cekUserTryAgain = () => {
+	const isTryAgain = () => {
 		const reloadBtn = document.getElementById("reload-icon");
 
 		reloadBtn.addEventListener("click", () => {
