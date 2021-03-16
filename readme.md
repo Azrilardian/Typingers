@@ -1,8 +1,8 @@
-# Typing Game Sederhana
+# Typengers
 
 ## Apa dan Tujuan
 
-Ini merupakan typing game sederhana hasil dari ATM ( **A**mati, **T**iru, **M**odifikasi) salah satu vidio pembelajaran di _channel_ [channel traversy media](). Project ini saya buat dengan tujuan untuk mengasah logika pemrograman saya, terutama pada bahasa pemrograman Javascript.
+Ini merupakan pengembangan lebih lanjut dari _project_ [Typeing Test Sederhana](), dengan perubahan yang signifikan ada pada tampilan UI aplikasi.
 
 ## Teknologi yang digunakan
 
@@ -14,8 +14,11 @@ Ini merupakan typing game sederhana hasil dari ATM ( **A**mati, **T**iru, **M**o
 ## Fitur
 
 -   Responsif pada semua ukuran _device_
--   Penyimpanan data pada local storage
+-   Darkmode
+-   Penyimpanan data pada _local storage_
 
 ## Screenshot
 
 ![Screenshot 1](./Screenshot/1.png)
+
+![Screenshot 2](./Screenshot/2.png)
