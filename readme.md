@@ -8,6 +8,7 @@ Ini merupakan pengembangan lebih lanjut dari _project_ [Typeing Test Sederhana](
 
 -   Html
 -   Css
+-   Sass
 -   Javascript
 -   Webpack
 
