@@ -2,7 +2,7 @@
 
 ## Apa dan Tujuan
 
-Ini merupakan pengembangan lebih lanjut dari _project_ [Typeing Test Sederhana](), dengan perubahan yang signifikan ada pada tampilan UI aplikasi.
+Ini merupakan pengembangan lebih lanjut dari _project_ [Typing Test v1](https://github.com/Azrilardian/Typing.test.v1), dengan perubahan yang signifikan ada pada tampilan UI aplikasi.
 
 ## Teknologi yang digunakan
 
