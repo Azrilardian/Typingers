@@ -30,6 +30,10 @@ body > header {
 		h2 {
 			font-size: 20px;
 			color: $default-blue-color;
+
+			@media screen and (max-width: 280px) {
+				font-size: 17px;
+			}
 		}
 		.set-theme {
 			position: relative;
@@ -62,6 +66,9 @@ body > header {
 			p {
 				font-weight: 500;
 				font-size: 13px;
+				@media screen and (max-width: 280px) {
+					font-size: 12px;
+				}
 			}
 		}
 	}
@@ -122,6 +129,10 @@ main .container {
 				span.incorrect {
 					color: $hard-difficulty;
 					background-color: lighten($color: $hard-difficulty, $amount: 30);
+				}
+
+				@media screen and (max-width: 360px) {
+					font-size: 14px;
 				}
 			}
 			.input {
@@ -281,6 +292,9 @@ main .container {
 						color: white;
 						margin-bottom: 15px;
 						text-align: center;
+						@media screen and (max-width: 280px) {
+							font-size: 19px;
+						}
 					}
 					h3::before {
 						content: "";
@@ -297,6 +311,9 @@ main .container {
 						font-size: 17px;
 						margin: 5px 0;
 						letter-spacing: 2px;
+						@media screen and (max-width: 360px) {
+							font-size: 15px;
+						}
 					}
 					p:nth-child(2) {
 						color: $easy-difficulty;
@@ -306,6 +323,10 @@ main .container {
 					}
 					p:last-child {
 						color: $hard-difficulty;
+					}
+
+					@media screen and (max-width: 280px) {
+						width: 240px;
 					}
 				}
 			}
@@ -484,6 +505,17 @@ footer {
 			height: auto;
 			cursor: pointer;
 		}
+	}
+
+	@media screen and (max-width: 360px) {
+		transform: translate(-50%, -50%) scale(0.9);
+	}
+
+	@media screen and (max-width: 320px) {
+		transform: translate(-50%, -50%) scale(0.8);
+	}
+	@media screen and (max-width: 280px) {
+		transform: translate(-50%, -50%) scale(0.7);
 	}
 }
 

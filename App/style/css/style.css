@@ -1,5 +1,6 @@
 body.darkmode {
-  background-color: #162e41;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#162e41f1), to(#162e41f1)), url(../../img/bg.png) !important;
+  background-image: linear-gradient(#162e41f1, #162e41f1), url(../../img/bg.png) !important;
 }
 
 body.darkmode .game main {
@@ -42,6 +43,10 @@ body.darkmode aside.instructions main p {
   color: white !important;
 }
 
+body.darkmode aside.instructions main p:nth-child(2) {
+  color: #fd4848 !important;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -55,9 +60,10 @@ html body {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  -webkit-transition: 0.3s ease-in;
-  transition: 0.3s ease-in;
-  background-image: url("../../img/bg.png");
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffffd3), to(#ffffffd3)), url(../../img/bg.png);
+  background-image: linear-gradient(#ffffffd3, #ffffffd3), url(../../img/bg.png);
   background-position: center;
   background-size: cover;
 }
@@ -84,8 +90,14 @@ body > header nav {
 }
 
 body > header nav h2 {
-  font-size: 23px;
+  font-size: 20px;
   color: #07689f;
+}
+
+@media screen and (max-width: 280px) {
+  body > header nav h2 {
+    font-size: 17px;
+  }
 }
 
 body > header nav .set-theme {
@@ -136,6 +148,12 @@ body > header nav .set-theme p {
   font-size: 13px;
 }
 
+@media screen and (max-width: 280px) {
+  body > header nav .set-theme p {
+    font-size: 12px;
+  }
+}
+
 main .container {
   display: -ms-grid;
   display: grid;
@@ -181,8 +199,8 @@ main .container .game main {
   -webkit-box-shadow: 3px 3px 10px #63636331;
           box-shadow: 3px 3px 10px #63636331;
   border-radius: 10px;
-  -webkit-transition: 0.3s ease-in;
-  transition: 0.3s ease-in;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 main .container .game main p {
@@ -190,8 +208,8 @@ main .container .game main p {
   padding: 10px 20px;
   font-size: 15px;
   color: #4e4e4e;
-  -webkit-transition: 0.3s ease-in;
-  transition: 0.3s ease-in;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 main .container .game main p span {
@@ -217,6 +235,12 @@ main .container .game main p span.incorrect {
   background-color: #ffdfdf;
 }
 
+@media screen and (max-width: 360px) {
+  main .container .game main p {
+    font-size: 14px;
+  }
+}
+
 main .container .game main .input {
   position: absolute;
   bottom: 0;
@@ -232,16 +256,8 @@ main .container .game main .input input {
   outline: none;
   border: none;
   font-family: "Poppins", sans-serif;
-  -webkit-transition: 0.3s ease-in;
-  transition: 0.3s ease-in;
-}
-
-main .container .game main .input input.match {
-  background-color: #2aeb62;
-}
-
-main .container .game main .input input.not-match {
-  background-color: #fd4848;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 main .container .game main .input input::-webkit-input-placeholder {
@@ -276,7 +292,7 @@ main .container .game main .input span {
 }
 
 main .container .game main .input span.correct {
-  background-color: #2aeb62;
+  background-color: #2aeb62 !important;
   -webkit-box-shadow: 0 0 3px #2aeb62;
           box-shadow: 0 0 3px #2aeb62;
 }
@@ -413,6 +429,8 @@ main .container aside.score-board main span#pin::after {
   width: 35px;
   height: 2px;
   background-color: #222222;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
   -webkit-transform: translate(7px, 23px) rotate(50deg);
           transform: translate(7px, 23px) rotate(50deg);
 }
@@ -451,6 +469,12 @@ main .container aside.score-board main .board h3 {
   text-align: center;
 }
 
+@media screen and (max-width: 280px) {
+  main .container aside.score-board main .board h3 {
+    font-size: 19px;
+  }
+}
+
 main .container aside.score-board main .board h3::before {
   content: "";
   position: absolute;
@@ -470,6 +494,12 @@ main .container aside.score-board main .board p {
   letter-spacing: 2px;
 }
 
+@media screen and (max-width: 360px) {
+  main .container aside.score-board main .board p {
+    font-size: 15px;
+  }
+}
+
 main .container aside.score-board main .board p:nth-child(2) {
   color: #2aeb62;
 }
@@ -480,6 +510,12 @@ main .container aside.score-board main .board p:nth-child(3) {
 
 main .container aside.score-board main .board p:last-child {
   color: #fd4848;
+}
+
+@media screen and (max-width: 280px) {
+  main .container aside.score-board main .board {
+    width: 240px;
+  }
 }
 
 main .container aside.score-board h1#score {
@@ -504,8 +540,8 @@ main .container aside.instructions main {
   border: 1px solid #e7e7e7;
   width: 280px;
   padding: 20px 0;
-  -webkit-transition: 0.3s ease-in;
-  transition: 0.3s ease-in;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 main .container aside.instructions main hr {
@@ -519,8 +555,8 @@ main .container aside.instructions main h3 {
   color: #07689f;
   margin-bottom: 40px;
   text-align: center;
-  -webkit-transition: 0.3s ease-in;
-  transition: 0.3s ease-in;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 main .container aside.instructions main h3::before {
@@ -546,8 +582,8 @@ main .container aside.instructions main .text p {
   width: 90%;
   line-height: 27px;
   color: #585858;
-  -webkit-transition: 0.3s ease-in;
-  transition: 0.3s ease-in;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 main .container aside.instructions main .text p:nth-child(2) {
@@ -592,6 +628,164 @@ footer {
   font-size: 13px;
   padding: 8px 0;
   margin-top: 50px;
+}
+
+.statistic.show {
+  content-visibility: auto;
+  opacity: 1;
+  z-index: 999;
+}
+
+.statistic {
+  z-index: -1;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 500px;
+  background-color: white;
+  -webkit-filter: drop-shadow(0 20px 30px #0000003f);
+          filter: drop-shadow(0 20px 30px #0000003f);
+  padding: 30px 50px;
+  border-radius: 10px;
+  -webkit-transition: -webkit-transform 0.3s ease-in-out;
+  transition: -webkit-transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.statistic header {
+  display: -ms-grid;
+  display: grid;
+  place-content: center;
+}
+
+.statistic header h2 {
+  font-size: 20px;
+  display: inline-block;
+  position: relative;
+  color: #07689f;
+  z-index: 1;
+}
+
+.statistic header h2::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: -7px;
+  width: 90%;
+  height: 80%;
+  background-color: #ffc93c;
+  z-index: -1;
+}
+
+.statistic h3 {
+  color: #07689f;
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+}
+
+.statistic main {
+  margin: 15px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.statistic main p {
+  font-weight: 500;
+}
+
+.statistic main section:first-child {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  line-height: 36px;
+}
+
+.statistic main section:first-child .left {
+  width: 110px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.statistic main section:first-child .right {
+  margin-left: 25px;
+}
+
+.statistic main img {
+  width: 180px;
+  height: auto;
+}
+
+.statistic footer {
+  margin: 20px 0 0 0;
+  padding: 0;
+  background-color: unset;
+}
+
+.statistic footer img {
+  width: 30px;
+  height: auto;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 360px) {
+  .statistic {
+    -webkit-transform: translate(-50%, -50%) scale(0.9);
+            transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .statistic {
+    -webkit-transform: translate(-50%, -50%) scale(0.8);
+            transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+@media screen and (max-width: 280px) {
+  .statistic {
+    -webkit-transform: translate(-50%, -50%) scale(0.7);
+            transform: translate(-50%, -50%) scale(0.7);
+  }
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  z-index: -1;
+}
+
+.overlay.active {
+  z-index: unset;
+  background-color: #020304d5;
 }
 
 @media screen and (max-width: 1300px) {
@@ -655,11 +849,65 @@ footer {
   main .container aside.instructions {
     margin: 60px 0;
   }
+  main .container aside.instructions main .text P:nth-child(3) {
+    margin-top: 3px;
+  }
 }
 
 @media screen and (max-width: 576px) {
+  .statistic {
+    width: 400px;
+    padding: 20px 30px;
+  }
+  .statistic h3 {
+    -webkit-transform: translateY(13px);
+            transform: translateY(13px);
+  }
+  .statistic main p {
+    font-size: 14px;
+  }
+  .statistic main section:first-child {
+    line-height: 30px;
+  }
+  .statistic main section:first-child .left {
+    width: 90px;
+  }
+  .statistic main section:first-child .right {
+    margin-left: 20px;
+  }
+  .statistic main img {
+    width: 150px;
+  }
   .container {
     padding: 10px 20px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .statistic {
+    width: 350px;
+    padding: 15px 25px;
+  }
+  .statistic header h2 {
+    font-size: 18px;
+  }
+  .statistic h3 {
+    font-size: 17px;
+  }
+  .statistic main {
+    margin: 13px 0;
+  }
+  .statistic main section:first-child {
+    line-height: 28px;
+  }
+  .statistic main section:first-child .left {
+    width: 110px;
+  }
+  .statistic main img {
+    width: 100px;
+  }
+  .statistic footer img {
+    width: 25px;
   }
 }
 /*# sourceMappingURL=style.css.map */
