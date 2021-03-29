@@ -18,7 +18,8 @@ const typeingGame = () => {
 	let time = 0;
 	let difficultyTime = 0;
 	let totalTime = 0;
-	let stopCountDown;
+	let countDownInterval;
+	let timesUpInterval;
 	let totalTyped = 0;
 	let isFirstPlay = true;
 	let errorTypedCount = 0;
@@ -88,18 +89,19 @@ const typeingGame = () => {
 	======================================================================================================
 	*/
 
-	function gameStart() {
+	function initializeGame() {
 		totallyResetRecentGame();
 		setUserPreference();
 		input.addEventListener("input", () => {
 			matchText();
 			if (isFirstPlay && input.value.length > 0) {
-				stopCountDown = setInterval(countDown, 1000);
+				countDownInterval = setInterval(() => (timeDisplay.innerText = --time), 1000);
+				timesUpInterval = setInterval(timesUp, 50);
 				isFirstPlay = false;
 			}
 		});
 	}
-	gameStart();
+	initializeGame();
 
 	function totallyResetRecentGame() {
 		resetinputAndTime();
@@ -215,10 +217,11 @@ const typeingGame = () => {
 		});
 	};
 
-	function countDown() {
-		if (time > 0) time--;
-		else if (time === 0) {
-			clearInterval(stopCountDown);
+	function timesUp() {
+		if (time === 0) {
+			time = "00";
+			clearInterval(countDownInterval);
+			clearInterval(timesUpInterval);
 			totalTime += difficultyTime;
 			checkTotalErrorWord();
 			checkTotalTyped();
@@ -226,8 +229,7 @@ const typeingGame = () => {
 			checkHighScore();
 			isTryAgain();
 		}
-
-		timeDisplay.innerText = time;
+		timeDisplay.textContent = time;
 	}
 
 	const showTimesUpSection = () => {
@@ -312,14 +314,14 @@ const typeingGame = () => {
 
 		reloadBtn.addEventListener("click", () => {
 			hideTimesUpSection();
-			gameStart();
+			initializeGame();
 			isFirstPlay = true;
 		});
 
 		document.addEventListener("keyup", (e) => {
 			if (e.keyCode === 13) {
 				hideTimesUpSection();
-				gameStart();
+				initializeGame();
 				isFirstPlay = true;
 			}
 		});
