@@ -105,6 +105,24 @@ main .container {
 			box-shadow: 3px 3px 10px #63636331;
 			border-radius: 10px;
 			transition: 0.2s ease-in-out;
+
+			span.timer-icon {
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				top: -30px;
+				width: 55px;
+				height: 55px;
+				border-radius: 50%;
+				background-color: $default-yellow-color;
+				display: grid;
+				place-items: center;
+				img {
+					width: 35px;
+					height: auto;
+				}
+			}
+
 			p {
 				margin-top: 30px;
 				padding: 10px 20px;
@@ -170,17 +188,6 @@ main .container {
 					box-shadow: 0 0 3px $easy-difficulty;
 				}
 			}
-		}
-		main::after {
-			content: "";
-			position: absolute;
-			top: 0;
-			left: 50%;
-			transform: translate(-50%, -55%);
-			width: 55px;
-			height: 55px;
-			background-color: $default-yellow-color;
-			border-radius: 50%;
 		}
 
 		main::before {
@@ -334,6 +341,7 @@ main .container {
 				margin-top: 50px;
 				font-family: "Covered By Your Grace", cursive;
 				color: $default-yellow-color;
+				font-size: 30px;
 				text-shadow: -3px 3px 2px $default-blue-color;
 			}
 		}

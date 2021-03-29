@@ -88,6 +88,36 @@ const typeingGame = () => {
 	======================================================================================================
 	*/
 
+	function gameStart() {
+		totallyResetRecentGame();
+		setUserPreference();
+		input.addEventListener("input", () => {
+			matchText();
+			if (isFirstPlay && input.value.length > 0) {
+				stopCountDown = setInterval(countDown, 1000);
+				isFirstPlay = false;
+			}
+		});
+	}
+	gameStart();
+
+	function totallyResetRecentGame() {
+		resetinputAndTime();
+		skor = 0;
+		skorDisplay.innerText = skor;
+		errorTypedCount = 0;
+		difficultyTime = 0;
+		totalTime = 0;
+		totalTyped = 0;
+	}
+
+	function resetinputAndTime() {
+		input.value = null;
+		input.disabled = false;
+		input.focus();
+		timeDisplay.innerText = time;
+	}
+
 	function setUserPreference() {
 		let words = "";
 		switch (recentDifficulty.innerText) {
@@ -134,80 +164,6 @@ const typeingGame = () => {
 		spanEveryWord();
 	}
 
-	const resetinputAndTime = () => {
-		input.value = null;
-		input.disabled = false;
-		input.focus();
-		timeDisplay.innerText = time;
-	};
-
-	const totallyResetRecentGame = () => {
-		resetinputAndTime();
-		skor = 0;
-		skorDisplay.innerText = skor;
-		errorTypedCount = 0;
-		difficultyTime = 0;
-		totalTime = 0;
-		totalTyped = 0;
-	};
-
-	const difficultySelect = () => {
-		const setHeightOptionContainer = (option) => {
-			const allOptionHaveVisibleClass = option.classList.contains("visible");
-			if (allOptionHaveVisibleClass) {
-				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight * 3}px`;
-			} else {
-				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
-			}
-		};
-
-		setHeightOptionContainer(difficultyOption[2]);
-
-		difficultyOptionContainer.addEventListener("click", () => {
-			difficultyOption.forEach((e) => e.classList.toggle("visible"));
-			setHeightOptionContainer(difficultyOption[2]);
-		});
-
-		difficultyOption.forEach((option) => {
-			option.addEventListener("click", () => {
-				difficultyOption[0].id = "recent";
-				if (option.id == "recent") return;
-				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
-				totallyResetRecentGame();
-				setUserPreference();
-				syncDataWithLocalStorage(recentDifficulty.innerText);
-			});
-		});
-	};
-	difficultySelect();
-
-	function gameStart() {
-		totallyResetRecentGame();
-		setUserPreference();
-		input.addEventListener("input", () => {
-			matchText();
-			if (isFirstPlay && input.value.length > 0) {
-				stopCountDown = setInterval(countDown, 1000);
-				isFirstPlay = false;
-			}
-		});
-	}
-	gameStart();
-
-	const checkTotalErrorWord = () => {
-		const words = randomWordsDisplay.querySelectorAll("span");
-		words.forEach((word) => {
-			if (word.classList.contains("incorrect")) ++errorTypedCount;
-		});
-	};
-
-	const checkTotalTyped = () => {
-		const words = randomWordsDisplay.querySelectorAll("span");
-		words.forEach((word) => {
-			if (word.classList.contains("correct") || word.classList.contains("incorrect")) ++totalTyped;
-		});
-	};
-
 	function matchText() {
 		const words = randomWordsDisplay.querySelectorAll("span");
 		const value = input.value.split("");
@@ -245,6 +201,20 @@ const typeingGame = () => {
 		}
 	}
 
+	const checkTotalErrorWord = () => {
+		const words = randomWordsDisplay.querySelectorAll("span");
+		words.forEach((word) => {
+			if (word.classList.contains("incorrect")) ++errorTypedCount;
+		});
+	};
+
+	const checkTotalTyped = () => {
+		const words = randomWordsDisplay.querySelectorAll("span");
+		words.forEach((word) => {
+			if (word.classList.contains("correct") || word.classList.contains("incorrect")) ++totalTyped;
+		});
+	};
+
 	function countDown() {
 		if (time > 0) time--;
 		else if (time === 0) {
@@ -259,35 +229,6 @@ const typeingGame = () => {
 
 		timeDisplay.innerText = time;
 	}
-
-	const checkHighScore = () => {
-		const easyHighScore = +easyScore.innerText;
-		const medHighScore = +medScore.innerText;
-		const hardHighScore = +hardScore.innerText;
-
-		const newHighScore = (whatScore) => (whatScore.innerText = skor);
-
-		switch (recentDifficulty.innerText) {
-			case "EASY":
-				if (skor > easyHighScore) {
-					newHighScore(easyScore);
-					syncDataWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
-				}
-				break;
-			case "MEDIUM":
-				if (skor > medHighScore) {
-					newHighScore(medScore);
-					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
-				}
-				break;
-			case "HARD":
-				if (skor > hardHighScore) {
-					newHighScore(hardScore);
-					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
-				}
-				break;
-		}
-	};
 
 	const showTimesUpSection = () => {
 		const totalScoreDisplay = document.getElementById("total-score");
@@ -337,9 +278,33 @@ const typeingGame = () => {
 		showingResult();
 	};
 
-	const hideTimesUpSection = () => {
-		overlay.classList.remove("active");
-		statisticSection.classList.remove("show");
+	const checkHighScore = () => {
+		const easyHighScore = +easyScore.innerText;
+		const medHighScore = +medScore.innerText;
+		const hardHighScore = +hardScore.innerText;
+
+		const newHighScore = (whatScore) => (whatScore.innerText = skor);
+
+		switch (recentDifficulty.innerText) {
+			case "EASY":
+				if (skor > easyHighScore) {
+					newHighScore(easyScore);
+					syncDataWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
+				}
+				break;
+			case "MEDIUM":
+				if (skor > medHighScore) {
+					newHighScore(medScore);
+					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
+				}
+				break;
+			case "HARD":
+				if (skor > hardHighScore) {
+					newHighScore(hardScore);
+					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
+				}
+				break;
+		}
 	};
 
 	const isTryAgain = () => {
@@ -359,6 +324,41 @@ const typeingGame = () => {
 			}
 		});
 	};
+
+	const hideTimesUpSection = () => {
+		overlay.classList.remove("active");
+		statisticSection.classList.remove("show");
+	};
+
+	const difficultySelect = () => {
+		const setHeightOptionContainer = (option) => {
+			const allOptionHaveVisibleClass = option.classList.contains("visible");
+			if (allOptionHaveVisibleClass) {
+				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight * 3}px`;
+			} else {
+				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
+			}
+		};
+
+		setHeightOptionContainer(difficultyOption[2]);
+
+		difficultyOptionContainer.addEventListener("click", () => {
+			difficultyOption.forEach((e) => e.classList.toggle("visible"));
+			setHeightOptionContainer(difficultyOption[2]);
+		});
+
+		difficultyOption.forEach((option) => {
+			option.addEventListener("click", () => {
+				difficultyOption[0].id = "recent";
+				if (option.id == "recent") return;
+				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
+				totallyResetRecentGame();
+				setUserPreference();
+				syncDataWithLocalStorage(recentDifficulty.innerText);
+			});
+		});
+	};
+	difficultySelect();
 
 	const darkModeFeatures = () => {
 		toggle.addEventListener("click", function () {
