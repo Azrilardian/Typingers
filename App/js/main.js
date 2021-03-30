@@ -2,9 +2,9 @@ const typeingGame = () => {
 	const randomWords = require("random-words");
 	const skorDisplay = document.querySelector("#score span");
 	const timeDisplay = document.getElementById("time");
-	const infoDisplay = document.getElementById("review-info");
-	const input = document.querySelector("input");
 	const randomWordsDisplay = document.getElementById("random-text");
+	const input = document.querySelector("input");
+	const reviewIndicator = document.getElementById("review-indicator");
 	const recentDifficulty = document.getElementById("recent");
 	const easyScore = document.getElementById("easy-score");
 	const medScore = document.getElementById("medium-score");
@@ -14,6 +14,7 @@ const typeingGame = () => {
 	const statisticSection = document.querySelector(".statistic");
 	const overlay = document.querySelector(".overlay");
 	const toggle = document.querySelector(".set-theme .darkmode-toggle");
+	let words = "";
 	let skor = 0;
 	let time = 0;
 	let difficultyTime = 0;
@@ -120,49 +121,57 @@ const typeingGame = () => {
 		timeDisplay.innerText = time;
 	}
 
-	function setUserPreference() {
-		let words = "";
-		switch (recentDifficulty.innerText) {
-			case "EASY":
-				time = difficultyLevel.easy.time;
-				difficultyTime = difficultyLevel.easy.time;
-				words = randomWords({
-					exactly: 20,
-					join: " ",
-					maxLength: 5,
-				});
-				break;
-			case "MEDIUM":
-				time = difficultyLevel.medium.time;
-				difficultyTime = difficultyLevel.medium.time;
-				words = randomWords({
-					exactly: 20,
-					join: " ",
-					maxLength: 7,
-				});
-				break;
-			case "HARD":
-				time = difficultyLevel.hard.time;
-				difficultyTime = difficultyLevel.hard.time;
-				words = randomWords({
-					exactly: 12,
-					join: " ",
-					maxLength: 10,
-				});
-				break;
+	function inEasyMode() {
+		if (recentDifficulty.innerText === "EASY") {
+			time = difficultyLevel.easy.time;
+			difficultyTime = difficultyLevel.easy.time;
+			words = randomWords({
+				exactly: 20,
+				join: " ",
+				maxLength: 5,
+			});
 		}
+	}
+
+	function inMediumMode() {
+		if (recentDifficulty.innerText === "MEDIUM") {
+			time = difficultyLevel.medium.time;
+			difficultyTime = difficultyLevel.medium.time;
+			words = randomWords({
+				exactly: 20,
+				join: " ",
+				maxLength: 7,
+			});
+		}
+	}
+
+	function inHardMode() {
+		if (recentDifficulty.innerText === "HARD") {
+			time = difficultyLevel.hard.time;
+			difficultyTime = difficultyLevel.hard.time;
+			words = randomWords({
+				exactly: 12,
+				join: " ",
+				maxLength: 10,
+			});
+		}
+	}
+
+	function setUserPreference() {
+		inEasyMode();
+		inMediumMode();
+		inHardMode();
 
 		const spanEveryWord = () => {
 			randomWordsDisplay.innerText = "";
-			words.split("").map((char) => {
-				const spanChar = document.createElement("span");
-				spanChar.innerText = char;
-				randomWordsDisplay.appendChild(spanChar);
+			words.split("").map((word) => {
+				const span = document.createElement("span");
+				span.innerText = word;
+				randomWordsDisplay.appendChild(span);
 			});
 		};
 
 		timeDisplay.innerText = time;
-		infoDisplay.classList.add("correct");
 		spanEveryWord();
 	}
 
@@ -174,21 +183,22 @@ const typeingGame = () => {
 		words.forEach((word, index) => {
 			let character = value[index];
 			const characterUnclick = character == null;
-			const characterSame = character == word.textContent;
+			const characterCorrect = character == word.textContent;
 
 			if (characterUnclick) {
 				word.classList.remove("incorrect");
 				word.classList.remove("correct");
 				isAallWordTyped = false;
-			} else if (characterSame) {
+			} else if (characterCorrect) {
 				word.classList.add("correct");
 				word.classList.remove("incorrect");
-				infoDisplay.classList.add("correct");
+				reviewIndicator.classList.add("correct");
 				isAallWordTyped = true;
 			} else {
+				// character incorrect
 				word.classList.remove("correct");
 				word.classList.add("incorrect");
-				infoDisplay.classList.remove("correct");
+				reviewIndicator.classList.remove("correct");
 				isAallWordTyped = false;
 			}
 		});
@@ -229,7 +239,7 @@ const typeingGame = () => {
 			checkHighScore();
 			isTryAgain();
 		}
-		timeDisplay.textContent = time;
+		timeDisplay.innerText = time;
 	}
 
 	const showTimesUpSection = () => {
@@ -241,11 +251,10 @@ const typeingGame = () => {
 		let minutes = Math.floor(totalTime / 60);
 		const seconds = totalTime % 60;
 
-		const giveRandomNumbersAnimation = (target) => {
+		const giveRandomNumbersAnimation = (targets) => {
 			const randomNumbers = setInterval(() => {
-				target.map((e) => (e.innerText = Math.floor(Math.random() * 10)));
+				targets.map((target) => (target.innerText = Math.floor(Math.random() * 10)));
 			}, 10);
-
 			setTimeout(() => clearInterval(randomNumbers), 1500);
 		};
 
@@ -262,6 +271,7 @@ const typeingGame = () => {
 			return totalTime < secondInMinutes ? `00 M ${totalTime} S` : `${minutes} M : ${seconds} S`;
 		};
 
+		// Kalkulasi WPM kadang kurang tepat, ini masih dalam tahap perbaikan, secepatnya.
 		const calculateWPM = () => {
 			const grossWPM = totalTyped / 5;
 			const grossWPMDivTotalError = grossWPM - errorTypedCount;
@@ -280,33 +290,39 @@ const typeingGame = () => {
 		showingResult();
 	};
 
+	function highScoreInEasyMode(recentScore) {
+		if (recentDifficulty.innerText === "EASY") {
+			if (skor > recentScore) {
+				easyScore.innerText = skor;
+				syncDataWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
+			}
+		}
+	}
+
+	function highScoreInMediumMode(recentScore) {
+		if (recentDifficulty.innerText === "MEDIUM") {
+			if (skor > recentScore) {
+				medScore.innerText = skor;
+				syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
+			}
+		}
+	}
+
+	function highScoreInHardMode(recentScore) {
+		if (skor > recentScore) {
+			hardScore.innerText = skor;
+			syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
+		}
+	}
+
 	const checkHighScore = () => {
 		const easyHighScore = +easyScore.innerText;
 		const medHighScore = +medScore.innerText;
 		const hardHighScore = +hardScore.innerText;
 
-		const newHighScore = (whatScore) => (whatScore.innerText = skor);
-
-		switch (recentDifficulty.innerText) {
-			case "EASY":
-				if (skor > easyHighScore) {
-					newHighScore(easyScore);
-					syncDataWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
-				}
-				break;
-			case "MEDIUM":
-				if (skor > medHighScore) {
-					newHighScore(medScore);
-					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
-				}
-				break;
-			case "HARD":
-				if (skor > hardHighScore) {
-					newHighScore(hardScore);
-					syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
-				}
-				break;
-		}
+		highScoreInEasyMode(easyHighScore);
+		highScoreInMediumMode(medHighScore);
+		highScoreInHardMode(hardHighScore);
 	};
 
 	const isTryAgain = () => {
