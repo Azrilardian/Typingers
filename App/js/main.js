@@ -14,6 +14,10 @@ const typeingGame = () => {
 	const statisticSection = document.querySelector(".statistic");
 	const overlay = document.querySelector(".overlay");
 	const toggle = document.querySelector(".set-theme .darkmode-toggle");
+	const totalScoreDisplay = document.getElementById("total-score");
+	const totalTimeDisplay = document.getElementById("total-time");
+	const totalError = document.getElementById("total-error");
+	const wpmScore = document.getElementById("wpm-score");
 	let words = "";
 	let skor = 0;
 	let time = 0;
@@ -215,16 +219,15 @@ const typeingGame = () => {
 
 	const checkTotalErrorWord = () => {
 		const words = randomWordsDisplay.querySelectorAll("span");
-		words.forEach((word) => {
-			if (word.classList.contains("incorrect")) ++errorTypedCount;
-		});
+		const wordsArr = Array.from(words).filter((word) => word.classList.contains("incorrect"));
+		errorTypedCount = wordsArr.length;
 	};
 
 	const checkTotalTyped = () => {
 		const words = randomWordsDisplay.querySelectorAll("span");
-		words.forEach((word) => {
-			if (word.classList.contains("correct") || word.classList.contains("incorrect")) ++totalTyped;
-		});
+		const wordsCorrect = Array.from(words).filter((word) => word.classList.contains("correct")).length;
+		const wordsIncorrect = Array.from(words).filter((word) => word.classList.contains("incorrect")).length;
+		totalTyped = wordsCorrect + wordsIncorrect;
 	};
 
 	function timesUp() {
@@ -243,46 +246,6 @@ const typeingGame = () => {
 	}
 
 	const showTimesUpSection = () => {
-		const totalScoreDisplay = document.getElementById("total-score");
-		const totalTimeDisplay = document.getElementById("total-time");
-		const totalError = document.getElementById("total-error");
-		const wpmScore = document.getElementById("wpm-score");
-		const secondInMinutes = 60;
-		let minutes = Math.floor(totalTime / 60);
-		const seconds = totalTime % 60;
-
-		const giveRandomNumbersAnimation = (targets) => {
-			const randomNumbers = setInterval(() => {
-				targets.map((target) => (target.innerText = Math.floor(Math.random() * 10)));
-			}, 10);
-			setTimeout(() => clearInterval(randomNumbers), 1500);
-		};
-
-		const showingResult = () => {
-			setTimeout(() => {
-				totalScoreDisplay.innerText = skor;
-				totalTimeDisplay.innerText = calculateTotalTime();
-				totalError.innerText = errorTypedCount;
-				wpmScore.innerText = calculateWPM();
-			}, 1500);
-		};
-
-		const calculateTotalTime = () => {
-			return totalTime < secondInMinutes ? `00 M ${totalTime} S` : `${minutes} M : ${seconds} S`;
-		};
-
-		// Kalkulasi WPM kadang kurang tepat, ini masih dalam tahap perbaikan, secepatnya.
-		const calculateWPM = () => {
-			const grossWPM = totalTyped / 5;
-			const grossWPMDivTotalError = grossWPM - errorTypedCount;
-			let WPM;
-			if (minutes === 0) WPM = grossWPMDivTotalError;
-			else {
-				WPM = grossWPMDivTotalError - minutes;
-			}
-			return parseInt(WPM);
-		};
-
 		input.disabled = true;
 		overlay.classList.add("active");
 		statisticSection.classList.add("show");
@@ -290,28 +253,57 @@ const typeingGame = () => {
 		showingResult();
 	};
 
+	function giveRandomNumbersAnimation(targets) {
+		const randomNumbers = setInterval(() => {
+			targets.map((target) => (target.innerText = Math.floor(Math.random() * 10)));
+		}, 10);
+		setTimeout(() => clearInterval(randomNumbers), 1500);
+	}
+
+	const showingResult = () => {
+		setTimeout(() => {
+			totalScoreDisplay.innerText = skor;
+			totalTimeDisplay.innerText = calculateTotalTime();
+			totalError.innerText = errorTypedCount;
+			wpmScore.innerText = calculateWPM();
+		}, 1500);
+	};
+
+	const calculateTotalTime = () => {
+		const minutes = Math.floor(totalTime / 60);
+		const seconds = totalTime % 60;
+		const secondInMinutes = 60;
+		return totalTime < secondInMinutes ? `00 M ${totalTime} S` : `${minutes} M : ${seconds} S`;
+	};
+
+	// Kalkulasi WPM kadang kurang tepat, ini masih dalam tahap perbaikan, secepatnya.
+	const calculateWPM = () => {
+		const minutes = Math.floor(totalTime / 60);
+		const grossWPM = totalTyped / 5;
+		const grossWPMDivTotalError = grossWPM - errorTypedCount;
+		let WPM;
+		if (minutes === 0) WPM = grossWPMDivTotalError;
+		else {
+			WPM = grossWPMDivTotalError - minutes;
+		}
+		return parseInt(WPM);
+	};
+
 	function highScoreInEasyMode(recentScore) {
 		if (recentDifficulty.innerText === "EASY") {
-			if (skor > recentScore) {
-				easyScore.innerText = skor;
-				syncDataWithLocalStorage(recentDifficulty.innerText, skor, medScore.innerText, hardScore.innerText);
-			}
+			if (skor > recentScore) return (easyScore.innerText = skor);
 		}
 	}
 
 	function highScoreInMediumMode(recentScore) {
 		if (recentDifficulty.innerText === "MEDIUM") {
-			if (skor > recentScore) {
-				medScore.innerText = skor;
-				syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, skor, hardScore.innerText);
-			}
+			if (skor > recentScore) return (medScore.innerText = skor);
 		}
 	}
 
 	function highScoreInHardMode(recentScore) {
-		if (skor > recentScore) {
-			hardScore.innerText = skor;
-			syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
+		if (recentDifficulty.innerText === "HARD") {
+			if (skor > recentScore) return (hardScore.innerText = skor);
 		}
 	}
 
@@ -323,60 +315,55 @@ const typeingGame = () => {
 		highScoreInEasyMode(easyHighScore);
 		highScoreInMediumMode(medHighScore);
 		highScoreInHardMode(hardHighScore);
+		syncDataWithLocalStorage(recentDifficulty.innerText, easyScore.innerText, medScore.innerText, skor);
 	};
 
 	const isTryAgain = () => {
 		const reloadBtn = document.getElementById("reload-icon");
-
-		reloadBtn.addEventListener("click", () => {
-			hideTimesUpSection();
-			initializeGame();
-			isFirstPlay = true;
-		});
-
+		reloadBtn.addEventListener("click", reloadGame);
 		document.addEventListener("keyup", (e) => {
-			if (e.keyCode === 13) {
-				hideTimesUpSection();
-				initializeGame();
-				isFirstPlay = true;
-			}
+			if (e.keyCode === 13) reloadGame();
 		});
 	};
+
+	function reloadGame() {
+		hideTimesUpSection();
+		initializeGame();
+		isFirstPlay = true;
+	}
 
 	const hideTimesUpSection = () => {
 		overlay.classList.remove("active");
 		statisticSection.classList.remove("show");
 	};
 
-	const difficultySelect = () => {
-		const setHeightOptionContainer = (option) => {
-			const allOptionHaveVisibleClass = option.classList.contains("visible");
-			if (allOptionHaveVisibleClass) {
-				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight * 3}px`;
-			} else {
-				difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
-			}
-		};
+	difficultyOptionContainer.addEventListener("click", () => {
+		difficultyOption.forEach((option) => option.classList.toggle("visible"));
+		setHeightOptionContainer(difficultyOption);
+	});
 
-		setHeightOptionContainer(difficultyOption[2]);
-
-		difficultyOptionContainer.addEventListener("click", () => {
-			difficultyOption.forEach((e) => e.classList.toggle("visible"));
-			setHeightOptionContainer(difficultyOption[2]);
+	difficultyOption.forEach((option) => {
+		option.addEventListener("click", () => {
+			difficultyOption[0].id = "recent"; // agar ketika pilihan mode yang sedang berlangsung di click tidak mereload game
+			if (option.id === "recent") return;
+			[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
+			initializeGame();
+			syncDataWithLocalStorage(recentDifficulty.innerText);
 		});
+	});
 
-		difficultyOption.forEach((option) => {
-			option.addEventListener("click", () => {
-				difficultyOption[0].id = "recent";
-				if (option.id == "recent") return;
-				[recentDifficulty.innerText, option.innerText] = [option.innerText, recentDifficulty.innerText];
-				totallyResetRecentGame();
-				setUserPreference();
-				syncDataWithLocalStorage(recentDifficulty.innerText);
-			});
-		});
+	const setHeightOptionContainer = (option) => {
+		const lastOption = option[option.length - 1];
+		const allOptionHaveVisibleClass = lastOption.classList.contains("visible");
+		if (allOptionHaveVisibleClass) {
+			difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight * 3}px`;
+		}
+		if (!allOptionHaveVisibleClass) {
+			difficultyOptionContainer.style.height = `${difficultyOption[0].clientHeight}px`;
+		}
 	};
-	difficultySelect();
+
+	setHeightOptionContainer(difficultyOption);
 
 	const darkModeFeatures = () => {
 		toggle.addEventListener("click", function () {
