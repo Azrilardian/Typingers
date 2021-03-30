@@ -1,6 +1,6 @@
 body.darkmode {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#162e41f1), to(#162e41f1)), url(../../img/bg.png) !important;
-  background-image: linear-gradient(#162e41f1, #162e41f1), url(../../img/bg.png) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#162e41f1), to(#162e41f1)), url(../../img/bg.webp) !important;
+  background-image: linear-gradient(#162e41f1, #162e41f1), url(../../img/bg.webp) !important;
 }
 
 body.darkmode .game main {
@@ -62,8 +62,8 @@ html body {
           user-select: none;
   -webkit-transition: 0.2s ease-in-out;
   transition: 0.2s ease-in-out;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffffd3), to(#ffffffd3)), url(../../img/bg.png);
-  background-image: linear-gradient(#ffffffd3, #ffffffd3), url(../../img/bg.png);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffffd3), to(#ffffffd3)), url(../../img/bg.webp);
+  background-image: linear-gradient(#ffffffd3, #ffffffd3), url(../../img/bg.webp);
   background-position: center;
   background-size: cover;
 }
@@ -89,14 +89,13 @@ body > header nav {
           align-items: center;
 }
 
-body > header nav h2 {
-  font-size: 20px;
-  color: #07689f;
+body > header nav img {
+  height: 23px;
 }
 
-@media screen and (max-width: 280px) {
-  body > header nav h2 {
-    font-size: 17px;
+@media screen and (max-width: 576px) {
+  body > header nav img {
+    height: 20px;
   }
 }
 
@@ -203,6 +202,26 @@ main .container .game main {
   transition: 0.2s ease-in-out;
 }
 
+main .container .game main span.timer-icon {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  top: -30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: #ffc93c;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+main .container .game main span.timer-icon img {
+  width: 35px;
+  height: auto;
+}
+
 main .container .game main p {
   margin-top: 30px;
   padding: 10px 20px;
@@ -295,19 +314,6 @@ main .container .game main .input span.correct {
   background-color: #2aeb62 !important;
   -webkit-box-shadow: 0 0 3px #2aeb62;
           box-shadow: 0 0 3px #2aeb62;
-}
-
-main .container .game main::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  -webkit-transform: translate(-50%, -55%);
-          transform: translate(-50%, -55%);
-  width: 55px;
-  height: 55px;
-  background-color: #ffc93c;
-  border-radius: 50%;
 }
 
 main .container .game main::before {
@@ -522,6 +528,7 @@ main .container aside.score-board h1#score {
   margin-top: 50px;
   font-family: "Covered By Your Grace", cursive;
   color: #ffc93c;
+  font-size: 30px;
   text-shadow: -3px 3px 2px #07689f;
 }
 
