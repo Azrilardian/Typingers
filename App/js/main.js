@@ -220,14 +220,14 @@ const typeingGame = () => {
 	const checkTotalErrorWord = () => {
 		const words = randomWordsDisplay.querySelectorAll("span");
 		const wordsArr = Array.from(words).filter((word) => word.classList.contains("incorrect"));
-		errorTypedCount = wordsArr.length;
+		errorTypedCount += wordsArr.length;
 	};
 
 	const checkTotalTyped = () => {
 		const words = randomWordsDisplay.querySelectorAll("span");
 		const wordsCorrect = Array.from(words).filter((word) => word.classList.contains("correct")).length;
 		const wordsIncorrect = Array.from(words).filter((word) => word.classList.contains("incorrect")).length;
-		totalTyped = wordsCorrect + wordsIncorrect;
+		totalTyped += wordsCorrect + wordsIncorrect;
 	};
 
 	function timesUp() {
