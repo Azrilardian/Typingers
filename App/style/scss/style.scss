@@ -431,26 +431,19 @@ footer {
 	margin-top: 50px;
 }
 
-.statistic.show {
-	content-visibility: auto;
-	opacity: 1;
-	z-index: 999;
-}
-
 .statistic {
-	z-index: -1;
 	position: absolute;
 	top: 45%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 500px;
+	width: 510px;
 	background-color: white;
 	filter: drop-shadow(0 20px 30px #0000003f);
-	padding: 30px 50px;
 	border-radius: 10px;
 	transition: transform 0.3s ease-in-out;
 	transition: opacity 0.3s ease-in-out;
 	opacity: 0;
+	content-visibility: hidden;
 	header {
 		display: grid;
 		place-content: center;
@@ -481,17 +474,23 @@ footer {
 		p {
 			font-weight: 500;
 		}
-		section:first-child {
-			display: flex;
-			justify-content: space-between;
-			line-height: 36px;
-			.left {
-				width: 110px;
+		section {
+			&:first-child {
 				display: flex;
 				justify-content: space-between;
+				line-height: 36px;
+				margin-right: 10px;
+				.left {
+					width: 110px;
+					display: flex;
+					justify-content: space-between;
+				}
+				.right {
+					margin-left: 25px;
+				}
 			}
-			.right {
-				margin-left: 25px;
+			&:last-child {
+				margin-left: 10px;
 			}
 		}
 		display: flex;
@@ -523,6 +522,13 @@ footer {
 	@media screen and (max-width: 280px) {
 		transform: translate(-50%, -50%) scale(0.7);
 	}
+}
+
+.statistic.show {
+	padding: 30px 40px;
+	content-visibility: auto;
+	opacity: 1;
+	z-index: 99;
 }
 
 .overlay {
@@ -615,7 +621,7 @@ footer {
 
 @media screen and(max-width: 576px) {
 	.statistic {
-		width: 400px;
+		width: 450px;
 		padding: 20px 30px;
 		h3 {
 			transform: translateY(13px);
@@ -643,35 +649,39 @@ footer {
 	}
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 470px) {
 	.statistic {
-		width: 350px;
-		padding: 15px 25px;
-		header {
-			h2 {
-				font-size: 18px;
-			}
-		}
-		h3 {
-			font-size: 17px;
-		}
-		main {
-			margin: 13px 0;
+		// width: 380px;
+		// padding: 15px 25px;
+		// header {
+		// 	h2 {
+		// 		font-size: 18px;
+		// 	}
+		// }
+		// h3 {
+		// 	font-size: 17px;
+		// }
+		// main {
+		// 	margin: 13px 0;
 
-			section:first-child {
-				line-height: 28px;
-				.left {
-					width: 110px;
-				}
-			}
-			img {
-				width: 100px;
-			}
-		}
-		footer {
-			img {
-				width: 25px;
-			}
-		}
+		// 	section:first-child {
+		// 		line-height: 28px;
+		// 		.left {
+		// 			width: 110px;
+		// 			p {
+		// 				font-size: 13px;
+		// 			}
+		// 		}
+		// 	}
+		// 	img {
+		// 		width: 100px;
+		// 	}
+		// }
+		// footer {
+		// 	img {
+		// 		width: 25px;
+		// 	}
+		// }
+		transform: scale(0.8) translate(-62.5%, -50%);
 	}
 }

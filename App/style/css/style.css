@@ -637,24 +637,16 @@ footer {
   margin-top: 50px;
 }
 
-.statistic.show {
-  content-visibility: auto;
-  opacity: 1;
-  z-index: 999;
-}
-
 .statistic {
-  z-index: -1;
   position: absolute;
   top: 45%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  width: 500px;
+  width: 510px;
   background-color: white;
   -webkit-filter: drop-shadow(0 20px 30px #0000003f);
           filter: drop-shadow(0 20px 30px #0000003f);
-  padding: 30px 50px;
   border-radius: 10px;
   -webkit-transition: -webkit-transform 0.3s ease-in-out;
   transition: -webkit-transform 0.3s ease-in-out;
@@ -663,6 +655,7 @@ footer {
   -webkit-transition: opacity 0.3s ease-in-out;
   transition: opacity 0.3s ease-in-out;
   opacity: 0;
+  content-visibility: hidden;
 }
 
 .statistic header {
@@ -721,6 +714,7 @@ footer {
       -ms-flex-pack: justify;
           justify-content: space-between;
   line-height: 36px;
+  margin-right: 10px;
 }
 
 .statistic main section:first-child .left {
@@ -735,6 +729,10 @@ footer {
 
 .statistic main section:first-child .right {
   margin-left: 25px;
+}
+
+.statistic main section:last-child {
+  margin-left: 10px;
 }
 
 .statistic main img {
@@ -773,6 +771,13 @@ footer {
     -webkit-transform: translate(-50%, -50%) scale(0.7);
             transform: translate(-50%, -50%) scale(0.7);
   }
+}
+
+.statistic.show {
+  padding: 30px 40px;
+  content-visibility: auto;
+  opacity: 1;
+  z-index: 99;
 }
 
 .overlay {
@@ -863,7 +868,7 @@ footer {
 
 @media screen and (max-width: 576px) {
   .statistic {
-    width: 400px;
+    width: 450px;
     padding: 20px 30px;
   }
   .statistic h3 {
@@ -890,31 +895,10 @@ footer {
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 470px) {
   .statistic {
-    width: 350px;
-    padding: 15px 25px;
-  }
-  .statistic header h2 {
-    font-size: 18px;
-  }
-  .statistic h3 {
-    font-size: 17px;
-  }
-  .statistic main {
-    margin: 13px 0;
-  }
-  .statistic main section:first-child {
-    line-height: 28px;
-  }
-  .statistic main section:first-child .left {
-    width: 110px;
-  }
-  .statistic main img {
-    width: 100px;
-  }
-  .statistic footer img {
-    width: 25px;
+    -webkit-transform: scale(0.8) translate(-62.5%, -50%);
+            transform: scale(0.8) translate(-62.5%, -50%);
   }
 }
 /*# sourceMappingURL=style.css.map */

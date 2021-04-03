@@ -23,6 +23,9 @@ const typeingGame = () => {
 	let time = 0;
 	let difficultyTime = 0;
 	let totalTime = 0;
+	let minutes;
+	let seconds;
+	const secondInMinutes = 60.0;
 	let countDownInterval;
 	let timesUpInterval;
 	let totalTyped = 0;
@@ -270,23 +273,15 @@ const typeingGame = () => {
 	};
 
 	const calculateTotalTime = () => {
-		const minutes = Math.floor(totalTime / 60);
-		const seconds = totalTime % 60;
-		const secondInMinutes = 60;
-		return totalTime < secondInMinutes ? `00 M ${totalTime} S` : `${minutes} M : ${seconds} S`;
+		minutes = Math.floor(totalTime / 60);
+		seconds = totalTime % 60;
+		return totalTime < secondInMinutes ? `00 M : ${totalTime} S` : `${minutes} M : ${seconds} S`;
 	};
 
-	// Kalkulasi WPM kadang kurang tepat, ini masih dalam tahap perbaikan, secepatnya.
 	const calculateWPM = () => {
-		const minutes = Math.floor(totalTime / 60);
-		const grossWPM = totalTyped / 5;
-		const grossWPMDivTotalError = grossWPM - errorTypedCount;
-		let WPM;
-		if (minutes === 0) WPM = grossWPMDivTotalError;
-		else {
-			WPM = grossWPMDivTotalError - minutes;
-		}
-		return parseInt(WPM);
+		const netWpm = (totalTyped - errorTypedCount) / 5;
+		const wpm = netWpm / (totalTime / 100);
+		return parseInt(wpm);
 	};
 
 	function highScoreInEasyMode(recentScore) {
