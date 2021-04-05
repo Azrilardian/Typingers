@@ -100,7 +100,7 @@ const typeingGame = () => {
 	function initializeGame() {
 		totallyResetRecentGame();
 		setUserPreference();
-		input.addEventListener("input", () => {
+		input.addEventListener("input", (e) => {
 			matchText();
 			if (isFirstPlay && input.value.length > 0) {
 				countDownInterval = setInterval(() => (timeDisplay.innerText = --time), 1000);
@@ -127,6 +127,15 @@ const typeingGame = () => {
 		input.focus();
 		timeDisplay.innerText = time;
 	}
+
+	function whenCapslockOn() {
+		const capslockNotification = document.querySelector(".capslock-notification");
+		document.addEventListener("keyup", (e) => {
+			if (e.getModifierState("CapsLock")) return capslockNotification.classList.add("visible");
+			return capslockNotification.classList.remove("visible");
+		});
+	}
+	whenCapslockOn();
 
 	function inEasyMode() {
 		if (recentDifficulty.innerText === "EASY") {

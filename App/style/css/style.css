@@ -66,7 +66,6 @@ html body {
   background-image: linear-gradient(#ffffffd3, #ffffffd3), url(../../img/bg.webp);
   background-position: center;
   background-size: cover;
-  position: relative;
 }
 
 .container {
@@ -79,7 +78,7 @@ body > header {
   top: 0;
   left: 0;
   width: 100vw;
-  z-index: 99;
+  z-index: 3;
 }
 
 body > header nav {
@@ -638,7 +637,7 @@ main .container aside.instructions main p span:last-child {
   font-weight: 600;
 }
 
-footer {
+body > footer {
   background-color: #1d4468;
   margin-top: 50px;
   padding: 8px 0;
@@ -652,13 +651,13 @@ footer {
 }
 
 @media screen and (max-width: 1150px) {
-  footer {
+  body > footer {
     position: unset;
   }
 }
 
 .statistic {
-  position: absolute;
+  position: fixed;
   top: 45%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -751,8 +750,24 @@ footer {
   margin-left: 25px;
 }
 
+@media screen and (max-width: 480px) {
+  .statistic main section:first-child {
+    margin-right: 0;
+  }
+}
+
 .statistic main section:last-child {
   margin-left: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  .statistic main section:last-child {
+    margin: 20px 0 0 0;
+    display: -ms-grid;
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
 }
 
 .statistic main img {
@@ -760,10 +775,26 @@ footer {
   height: auto;
 }
 
+@media screen and (max-width: 480px) {
+  .statistic main {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+  }
+}
+
 .statistic footer {
   margin: 20px 0 0 0;
   padding: 0;
   background-color: unset;
+  text-align: center;
 }
 
 .statistic footer img {
@@ -772,24 +803,9 @@ footer {
   cursor: pointer;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 480px) {
   .statistic {
-    -webkit-transform: translate(-50%, -50%) scale(0.9);
-            transform: translate(-50%, -50%) scale(0.9);
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .statistic {
-    -webkit-transform: translate(-50%, -50%) scale(0.8);
-            transform: translate(-50%, -50%) scale(0.8);
-  }
-}
-
-@media screen and (max-width: 280px) {
-  .statistic {
-    -webkit-transform: translate(-50%, -50%) scale(0.7);
-            transform: translate(-50%, -50%) scale(0.7);
+    width: 85% !important;
   }
 }
 
@@ -797,7 +813,7 @@ footer {
   padding: 30px 40px;
   content-visibility: auto;
   opacity: 1;
-  z-index: 999;
+  z-index: 2;
 }
 
 .overlay {
@@ -806,8 +822,8 @@ footer {
   height: 100vh;
   top: 0;
   left: 0;
-  -webkit-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
+  -webkit-transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -816,8 +832,62 @@ footer {
 }
 
 .overlay.active {
-  z-index: unset;
+  z-index: 1;
   background-color: #020304d5;
+}
+
+.capslock-notification {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: whitesmoke;
+  -webkit-box-shadow: 5px 10px 15px rgba(49, 49, 49, 0.24);
+          box-shadow: 5px 10px 15px rgba(49, 49, 49, 0.24);
+  border-radius: 10px;
+  padding: 10px;
+  width: 370px;
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  content-visibility: hidden;
+  opacity: 0;
+  -webkit-transform: translate(-50%, 30px);
+          transform: translate(-50%, 30px);
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+}
+
+.capslock-notification img {
+  height: 35px;
+  width: auto;
+}
+
+.capslock-notification p {
+  font-weight: 500;
+  font-size: 14px;
+  margin-left: 15px;
+}
+
+@media screen and (max-width: 480px) {
+  .capslock-notification {
+    bottom: unset;
+    top: 80px;
+    width: 90%;
+    font-size: 13px;
+  }
+}
+
+.capslock-notification.visible {
+  content-visibility: auto;
+  opacity: 1;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
 }
 
 @media screen and (max-width: 1300px) {
@@ -912,13 +982,6 @@ footer {
   }
   .container {
     padding: 10px 20px;
-  }
-}
-
-@media screen and (max-width: 470px) {
-  .statistic {
-    -webkit-transform: scale(0.8) translate(-62.5%, -50%);
-            transform: scale(0.8) translate(-62.5%, -50%);
   }
 }
 /*# sourceMappingURL=style.css.map */
