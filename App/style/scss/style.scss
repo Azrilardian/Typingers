@@ -14,6 +14,7 @@ html body {
 	background-image: linear-gradient(#ffffffd3, #ffffffd3), url(../../img/bg.webp);
 	background-position: center;
 	background-size: cover;
+	position: relative;
 }
 
 .container {
@@ -22,6 +23,11 @@ html body {
 
 body > header {
 	background-color: $default-yellow-color;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	z-index: 99;
 	nav {
 		text-align: center;
 		display: flex;
@@ -72,234 +78,303 @@ body > header {
 	}
 }
 
-main .container {
-	display: grid;
-	grid-template-columns: 30% auto 30%;
-	grid-template-areas: "score-board game instructions";
-	margin-top: 30px;
-	min-height: 75vh;
+header + main {
+	padding-top: 80px;
+}
 
-	.game {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin: 0 20px;
-		grid-area: game;
+main {
+	.container {
+		display: grid;
+		grid-template-columns: 30% auto 30%;
+		grid-template-areas: "score-board game instructions";
+		margin-top: 30px;
+		min-height: 75vh;
 
-		h2 {
-			width: 250px;
-			font-size: 35px;
-			text-align: center;
-			color: $default-yellow-color;
-			text-shadow: -3px 3px 2px $default-blue-color;
-		}
-		main {
+		.game {
 			position: relative;
-			width: 100%;
-			margin: 50px 0 30px 0;
-			padding-bottom: 70px;
-			background-color: #f9f9f9;
-			box-shadow: 3px 3px 10px #63636331;
-			border-radius: 10px;
-			transition: 0.2s ease-in-out;
-
-			span.timer-icon {
-				position: absolute;
-				left: 50%;
-				transform: translateX(-50%);
-				top: -30px;
-				width: 55px;
-				height: 55px;
-				border-radius: 50%;
-				background-color: $default-yellow-color;
-				display: grid;
-				place-items: center;
-				img {
-					width: 35px;
-					height: auto;
-				}
-			}
-
-			p {
-				margin-top: 30px;
-				padding: 10px 20px;
-				font-size: 15px;
-				color: #4e4e4e;
-				transition: 0.2s ease-in-out;
-				span {
-					display: inline-block;
-					padding: 3px;
-					min-width: 15px;
-					text-align: center;
-					margin: 1px;
-					border-radius: 5px;
-				}
-				span.word.active {
-					background-color: #d3d3d34f;
-				}
-				span.correct {
-					color: $easy-difficulty;
-					background-color: lighten($color: $easy-difficulty, $amount: 30);
-				}
-				span.incorrect {
-					color: $hard-difficulty;
-					background-color: lighten($color: $hard-difficulty, $amount: 30);
-				}
-
-				@media screen and (max-width: 360px) {
-					font-size: 14px;
-				}
-			}
-			.input {
-				position: absolute;
-				bottom: 0;
-				width: 100%;
-				border-bottom-left-radius: 10px;
-				border-bottom-right-radius: 10px;
-				overflow: hidden;
-				input {
-					padding: 13px 50px 13px 20px;
-					width: 100%;
-					outline: none;
-					border: none;
-					font-family: "Poppins", sans-serif;
-					transition: 0.2s ease-in-out;
-				}
-				input::placeholder {
-					color: $default-blue-color;
-				}
-				span {
-					position: absolute;
-					top: 50%;
-					right: 20px;
-					transform: translateY(-50%);
-					display: inline-block;
-					width: 13px;
-					height: 13px;
-					background-color: $hard-difficulty;
-					box-shadow: 0 0 3px $hard-difficulty;
-					border-radius: 50%;
-				}
-				span.correct {
-					background-color: $easy-difficulty !important;
-					box-shadow: 0 0 3px $easy-difficulty;
-				}
-			}
-		}
-
-		main::before {
-			content: "";
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			background-color: $default-blue-color;
-			z-index: -1;
-			border-radius: 10px;
-			transform: translateY(-10px);
-		}
-		.difficulty-option {
-			position: relative;
-			width: 100px;
-			border-radius: 10px;
-			background-color: $default-blue-color;
-			color: white;
 			display: flex;
 			flex-direction: column;
-			overflow: hidden;
-			transition: 0.2s ease;
-			cursor: pointer;
-			span {
-				font-size: 14px;
-				padding: 5px 10px;
-				visibility: hidden;
-				opacity: 0;
-				&:hover {
-					background-color: lighten($color: $default-blue-color, $amount: 3);
+			align-items: center;
+			margin: 0 20px;
+			grid-area: game;
+
+			h2 {
+				width: 250px;
+				font-size: 35px;
+				text-align: center;
+				color: $default-yellow-color;
+				text-shadow: -3px 3px 2px $default-blue-color;
+			}
+			main {
+				position: relative;
+				width: 100%;
+				margin: 50px 0 30px 0;
+				padding-bottom: 70px;
+				background-color: #f9f9f9;
+				box-shadow: 3px 3px 10px #63636331;
+				border-radius: 10px;
+				transition: 0.2s ease-in-out;
+
+				span.timer-icon {
+					position: absolute;
+					left: 50%;
+					transform: translateX(-50%);
+					top: -30px;
+					width: 55px;
+					height: 55px;
+					border-radius: 50%;
+					background-color: $default-yellow-color;
+					display: grid;
+					place-items: center;
+					img {
+						width: 35px;
+						height: auto;
+					}
+				}
+
+				p {
+					margin-top: 30px;
+					padding: 10px 20px;
+					font-size: 15px;
+					color: #4e4e4e;
+					transition: 0.2s ease-in-out;
+					span {
+						display: inline-block;
+						padding: 3px;
+						min-width: 15px;
+						text-align: center;
+						margin: 1px;
+						border-radius: 5px;
+					}
+					span.word.active {
+						background-color: #d3d3d34f;
+					}
+					span.correct {
+						color: $easy-difficulty;
+						background-color: lighten($color: $easy-difficulty, $amount: 30);
+					}
+					span.incorrect {
+						color: $hard-difficulty;
+						background-color: lighten($color: $hard-difficulty, $amount: 30);
+					}
+
+					@media screen and (max-width: 360px) {
+						font-size: 14px;
+					}
+				}
+				.input {
+					position: absolute;
+					bottom: 0;
+					width: 100%;
+					border-bottom-left-radius: 10px;
+					border-bottom-right-radius: 10px;
+					overflow: hidden;
+					input {
+						padding: 13px 50px 13px 20px;
+						width: 100%;
+						outline: none;
+						border: none;
+						font-family: "Poppins", sans-serif;
+						transition: 0.2s ease-in-out;
+					}
+					input::placeholder {
+						color: $default-blue-color;
+					}
+					span {
+						position: absolute;
+						top: 50%;
+						right: 20px;
+						transform: translateY(-50%);
+						display: inline-block;
+						width: 13px;
+						height: 13px;
+						background-color: $hard-difficulty;
+						box-shadow: 0 0 3px $hard-difficulty;
+						border-radius: 50%;
+					}
+					span.correct {
+						background-color: $easy-difficulty !important;
+						box-shadow: 0 0 3px $easy-difficulty;
+					}
 				}
 			}
-			span:first-child {
-				visibility: visible !important;
-				opacity: 1 !important;
-			}
-			span.visible {
-				visibility: visible;
-				opacity: 1;
-			}
-			span.arrow-icon {
+
+			main::before {
+				content: "";
 				position: absolute;
-				user-select: none;
-				top: 3px;
-				right: 0px;
-				visibility: unset;
-				opacity: unset;
-				&:hover {
-					background-color: unset;
+				width: 100%;
+				height: 100%;
+				background-color: $default-blue-color;
+				z-index: -1;
+				border-radius: 10px;
+				transform: translateY(-10px);
+			}
+			.difficulty-option {
+				position: relative;
+				width: 100px;
+				border-radius: 10px;
+				background-color: $default-blue-color;
+				color: white;
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+				transition: 0.2s ease;
+				cursor: pointer;
+				span {
+					font-size: 14px;
+					padding: 5px 10px;
+					visibility: hidden;
+					opacity: 0;
+					&:hover {
+						background-color: lighten($color: $default-blue-color, $amount: 3);
+					}
+				}
+				span:first-child {
+					visibility: visible !important;
+					opacity: 1 !important;
+				}
+				span.visible {
+					visibility: visible;
+					opacity: 1;
+				}
+				span.arrow-icon {
+					position: absolute;
+					user-select: none;
+					top: 3px;
+					right: 0px;
+					visibility: unset;
+					opacity: unset;
+					&:hover {
+						background-color: unset;
+					}
 				}
 			}
 		}
-	}
 
-	aside {
-		display: flex;
-		flex-direction: column;
-		margin-top: 30px;
+		aside {
+			display: flex;
+			flex-direction: column;
+			margin-top: 30px;
 
-		&.score-board {
-			justify-content: start;
-			align-items: flex-start;
-			main {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				span#pin {
-					display: inline-block;
+			&.score-board {
+				justify-content: start;
+				align-items: flex-start;
+				main {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					span#pin {
+						display: inline-block;
+						position: relative;
+						width: 25px;
+						height: 25px;
+						background-color: $default-yellow-color;
+						border-radius: 50%;
+					}
+
+					span#pin::before,
+					span#pin::after {
+						content: "";
+						position: absolute;
+						z-index: -1;
+						display: inline-block;
+						width: 35px;
+						height: 2px;
+						background-color: #222222;
+						transition: 0.2s ease-in-out;
+						transform: translate(7px, 23px) rotate(50deg);
+					}
+					span#pin::after {
+						transform: translate(-15px, 23px) rotate(-50deg);
+					}
+					.board {
+						width: 280px;
+						margin-top: 10px;
+						height: 180px;
+						background-color: $default-blue-color;
+						transform: rotate(2deg);
+						border-radius: 8px;
+						padding: 20px 25px;
+						box-shadow: -3px 3px 0px 2px #2e546d;
+						transition: 0.2s ease;
+						font-family: "Ranga", cursive;
+
+						&:hover {
+							transform: rotate(0);
+						}
+						h3 {
+							position: relative;
+							font-size: 22px;
+							color: white;
+							margin-bottom: 15px;
+							text-align: center;
+							@media screen and (max-width: 280px) {
+								font-size: 19px;
+							}
+						}
+						h3::before {
+							content: "";
+							position: absolute;
+							bottom: -5px;
+							left: 50%;
+							transform: translateX(-50%);
+							width: 40%;
+							height: 2px;
+							background-color: $default-yellow-color;
+						}
+						p {
+							font-weight: 500;
+							font-size: 17px;
+							margin: 5px 0;
+							letter-spacing: 2px;
+							@media screen and (max-width: 360px) {
+								font-size: 15px;
+							}
+						}
+						p:nth-child(2) {
+							color: $easy-difficulty;
+						}
+						p:nth-child(3) {
+							color: $medium-difficulty;
+						}
+						p:last-child {
+							color: $hard-difficulty;
+						}
+
+						@media screen and (max-width: 280px) {
+							width: 240px;
+						}
+					}
+				}
+				h1#score {
+					margin-top: 50px;
+					font-family: "Covered By Your Grace", cursive;
+					color: $default-yellow-color;
+					font-size: 30px;
+					text-shadow: -3px 3px 2px $default-blue-color;
+				}
+			}
+			&.instructions {
+				align-items: flex-end;
+				grid-area: instructions;
+				main {
 					position: relative;
-					width: 25px;
-					height: 25px;
-					background-color: $default-yellow-color;
-					border-radius: 50%;
-				}
-
-				span#pin::before,
-				span#pin::after {
-					content: "";
-					position: absolute;
-					z-index: -1;
-					display: inline-block;
-					width: 35px;
-					height: 2px;
-					background-color: #222222;
-					transition: 0.2s ease-in-out;
-					transform: translate(7px, 23px) rotate(50deg);
-				}
-				span#pin::after {
-					transform: translate(-15px, 23px) rotate(-50deg);
-				}
-				.board {
+					background-color: #f9f9f9;
+					border: 1px solid #e7e7e7;
 					width: 280px;
-					margin-top: 10px;
-					height: 180px;
-					background-color: $default-blue-color;
-					transform: rotate(2deg);
-					border-radius: 8px;
-					padding: 20px 25px;
-					box-shadow: -3px 3px 0px 2px #2e546d;
-					transition: 0.2s ease;
-					font-family: "Ranga", cursive;
-
-					&:hover {
-						transform: rotate(0);
+					padding: 20px 0;
+					transition: 0.2s ease-in-out;
+					hr {
+						margin-bottom: 25px;
+						border-color: #07679f48;
 					}
 					h3 {
 						position: relative;
-						font-size: 22px;
-						color: white;
-						margin-bottom: 15px;
+						font-weight: 600;
+						color: $default-blue-color;
+						margin-bottom: 40px;
 						text-align: center;
-						@media screen and (max-width: 280px) {
-							font-size: 19px;
-						}
+						transition: 0.2s ease-in-out;
 					}
 					h3::before {
 						content: "";
@@ -311,111 +386,48 @@ main .container {
 						height: 2px;
 						background-color: $default-yellow-color;
 					}
-					p {
-						font-weight: 500;
-						font-size: 17px;
-						margin: 5px 0;
-						letter-spacing: 2px;
-						@media screen and (max-width: 360px) {
+					.text {
+						position: absolute;
+						top: 18%;
+						margin-left: 40px;
+
+						p {
+							font-size: 14px;
+							width: 90%;
+							line-height: 27px;
+							color: #585858;
+							transition: 0.2s ease-in-out;
+						}
+						p:nth-child(2) {
+							margin-top: 25px;
+							color: $hard-difficulty;
+							font-weight: 600;
 							font-size: 15px;
 						}
+						P:nth-child(3) {
+							margin-top: 4px;
+						}
 					}
-					p:nth-child(2) {
+					span#line {
+						position: absolute;
+						top: 5px;
+						left: 20px;
+						height: 370px;
+						width: 2px;
+						background-color: $default-blue-color;
+					}
+					p span:first-child {
 						color: $easy-difficulty;
+						font-weight: 600;
 					}
-					p:nth-child(3) {
+					p span:nth-child(2) {
 						color: $medium-difficulty;
+						font-weight: 600;
 					}
-					p:last-child {
-						color: $hard-difficulty;
-					}
-
-					@media screen and (max-width: 280px) {
-						width: 240px;
-					}
-				}
-			}
-			h1#score {
-				margin-top: 50px;
-				font-family: "Covered By Your Grace", cursive;
-				color: $default-yellow-color;
-				font-size: 30px;
-				text-shadow: -3px 3px 2px $default-blue-color;
-			}
-		}
-		&.instructions {
-			align-items: flex-end;
-			grid-area: instructions;
-			main {
-				position: relative;
-				background-color: #f9f9f9;
-				border: 1px solid #e7e7e7;
-				width: 280px;
-				padding: 20px 0;
-				transition: 0.2s ease-in-out;
-				hr {
-					margin-bottom: 25px;
-					border-color: #07679f48;
-				}
-				h3 {
-					position: relative;
-					font-weight: 600;
-					color: $default-blue-color;
-					margin-bottom: 40px;
-					text-align: center;
-					transition: 0.2s ease-in-out;
-				}
-				h3::before {
-					content: "";
-					position: absolute;
-					bottom: -5px;
-					left: 50%;
-					transform: translateX(-50%);
-					width: 40%;
-					height: 2px;
-					background-color: $default-yellow-color;
-				}
-				.text {
-					position: absolute;
-					top: 18%;
-					margin-left: 40px;
-
-					p {
-						font-size: 14px;
-						width: 90%;
-						line-height: 27px;
-						color: #585858;
-						transition: 0.2s ease-in-out;
-					}
-					p:nth-child(2) {
-						margin-top: 25px;
+					p span:last-child {
 						color: $hard-difficulty;
 						font-weight: 600;
-						font-size: 15px;
 					}
-					P:nth-child(3) {
-						margin-top: 4px;
-					}
-				}
-				span#line {
-					position: absolute;
-					top: 5px;
-					left: 20px;
-					height: 370px;
-					width: 2px;
-					background-color: $default-blue-color;
-				}
-				p span:first-child {
-					color: $easy-difficulty;
-					font-weight: 600;
-				}
-				p span:nth-child(2) {
-					color: $medium-difficulty;
-					font-weight: 600;
-				}
-				p span:last-child {
-					color: $hard-difficulty;
-					font-weight: 600;
 				}
 			}
 		}
@@ -424,11 +436,18 @@ main .container {
 
 footer {
 	background-color: #1d4468;
+	margin-top: 50px;
+	padding: 8px 0;
 	text-align: center;
 	color: white;
 	font-size: 13px;
-	padding: 8px 0;
-	margin-top: 50px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	@media screen and (max-width: 1150px) {
+		position: unset;
+	}
 }
 
 .statistic {
@@ -528,13 +547,13 @@ footer {
 	padding: 30px 40px;
 	content-visibility: auto;
 	opacity: 1;
-	z-index: 99;
+	z-index: 999;
 }
 
 .overlay {
 	position: fixed;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	top: 0;
 	left: 0;
 	transition: 0.3s ease-in-out;

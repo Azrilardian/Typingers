@@ -66,6 +66,7 @@ html body {
   background-image: linear-gradient(#ffffffd3, #ffffffd3), url(../../img/bg.webp);
   background-position: center;
   background-size: cover;
+  position: relative;
 }
 
 .container {
@@ -74,6 +75,11 @@ html body {
 
 body > header {
   background-color: #ffc93c;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 99;
 }
 
 body > header nav {
@@ -151,6 +157,10 @@ body > header nav .set-theme p {
   body > header nav .set-theme p {
     font-size: 12px;
   }
+}
+
+header + main {
+  padding-top: 80px;
 }
 
 main .container {
@@ -630,11 +640,21 @@ main .container aside.instructions main p span:last-child {
 
 footer {
   background-color: #1d4468;
+  margin-top: 50px;
+  padding: 8px 0;
   text-align: center;
   color: white;
   font-size: 13px;
-  padding: 8px 0;
-  margin-top: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+@media screen and (max-width: 1150px) {
+  footer {
+    position: unset;
+  }
 }
 
 .statistic {
@@ -777,13 +797,13 @@ footer {
   padding: 30px 40px;
   content-visibility: auto;
   opacity: 1;
-  z-index: 99;
+  z-index: 999;
 }
 
 .overlay {
   position: fixed;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   left: 0;
   -webkit-transition: 0.3s ease-in-out;
